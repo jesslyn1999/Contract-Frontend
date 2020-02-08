@@ -1,0 +1,14 @@
+.outer-main-div {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.static-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
