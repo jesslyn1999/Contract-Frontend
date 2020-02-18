@@ -4,6 +4,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdminPage from 'scenes/administration-ui/AdminPage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
 
+import 'bootstrap/dist/css/bootstrap.css';
+import Login from '../components/login.component';
+
 export const App = () => {
     return (
         <BrowserRouter>
@@ -18,8 +21,9 @@ export const App = () => {
                         </div>
                     )}
                 />
-                <Route key="admin" exact path="/admin" render={AdminPage}/>
-                <Route key="section" exact path="/section" render={SectionPage}/>
+                <Route key="admin" exact path="/admin" render={AdminPage} />
+                <Route key="section" exact path="/section" render={SectionPage} />
+                <Route key={'login'} path="/login" component={Login} />
             </Switch>
         </BrowserRouter>
     );
