@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     appBar: {
         background: '#fff',
         color: '#000',
+        minWidth: theme.spacing(90),
     },
     toolbar: {
         minWidth: theme.spacing(90),
@@ -24,7 +25,6 @@ const useStyles = makeStyles(theme => ({
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
-        margin: theme.spacing(0, 2, 1, 0),
         flexGrow: 1,
     },
     searchIcon: {
@@ -42,7 +42,6 @@ const useStyles = makeStyles(theme => ({
     },
     inputInput: {
         padding: theme.spacing(1, 3, 1, 7),
-        marginLeft: theme.spacing(1),
         transition: theme.transitions.create('width'),
         width: '100%',
         fontSize: theme.spacing(2),
@@ -54,7 +53,7 @@ export default function CustomNavbar(props) {
     const classes = useStyles();
 
     return (
-        <AppBar position="sticky" className={classes.appBar}>
+        <AppBar position="sticky"  className={classes.appBar}>
             <Toolbar className={classes.toolbar}>
                 <IconButton
                     edge="start"

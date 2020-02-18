@@ -18,6 +18,25 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import CustomSettingButton from './CustomSettingButton';
 
+const EnhancedTableToolbar = (props) => {
+    const classes = useToolbarStyles();
+    const { title } = props;
+
+    return (
+        <Toolbar
+            className={clsx(classes.root, null)}
+        >
+            <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
+                {title}
+            </Typography>
+            <Tooltip title="Filter list">
+                <IconButton href="" aria-label="filter list">
+                    <FilterListIcon/>
+                </IconButton>
+            </Tooltip>
+        </Toolbar>
+    );
+};
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -92,30 +111,10 @@ const useToolbarStyles = makeStyles(theme => ({
     },
 }));
 
-const EnhancedTableToolbar = (props) => {
-    const classes = useToolbarStyles();
-    const { title } = props;
-
-    return (
-        <Toolbar
-            className={clsx(classes.root, null)}
-        >
-            <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
-                {title}
-            </Typography>
-            <Tooltip title="Filter list">
-                <IconButton href="" aria-label="filter list">
-                    <FilterListIcon/>
-                </IconButton>
-            </Tooltip>
-        </Toolbar>
-    );
-};
-
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        margin: theme.spacing(5),
+        margin: theme.spacing(5, 0),
     },
     paper: {
         width: '100%',
