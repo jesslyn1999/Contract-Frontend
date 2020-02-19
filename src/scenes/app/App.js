@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import AdminPage from 'scenes/administration-ui/AdminPage';
+import SectionPage from 'scenes/sections-ui/SectionPage';
 
 export const App = () => {
     return (
@@ -16,6 +18,8 @@ export const App = () => {
                         </div>
                     )}
                 />
+                <Route key="admin" exact path="/admin" render={AdminPage}/>
+                <Route key="section" exact path="/section" render={SectionPage}/>
             </Switch>
         </BrowserRouter>
     );
