@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdminPage from 'scenes/administration-ui/AdminPage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
 
-import 'bootstrap/dist/css/bootstrap.css';
 import Login from '../components/login.component';
 
 export const App = () => {
