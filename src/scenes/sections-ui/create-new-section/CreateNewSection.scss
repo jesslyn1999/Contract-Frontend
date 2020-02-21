@@ -1,0 +1,49 @@
+.popup-content {
+    border-radius: 10px;
+}
+
+.new_section_container {
+    padding: 1.5em;
+}
+
+.new_section_container > .modal_title {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 30px;
+    text-align: center;
+    padding: 5px;
+}
+
+.input_judul_label {
+    margin-right: 1em;
+}
+
+.input_judul_container {
+    margin: 1em 0 1em 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    font-size: 18px;
+}
+
+.prompt_button_container {
+    margin-top: 1.5em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    grid-column-gap: 1em;
+}
+
+.ck_editor_container {
+}
+.ck-editor__editable_inline {
+    min-height: 20em;
+    max-height: 20em;
+    overflow-y: scroll;
+}
+
+.prompt_button {
+    // flex-basis: 0;
+    // flex-grow: 50%;
+}

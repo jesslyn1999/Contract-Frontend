@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomTable from 'components/material-ui/CustomTable';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
-
+import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
 function createData(id, name, context) {
     return { id, name, context };
 }
@@ -16,27 +16,79 @@ const headCells = [
 ];
 
 const rows = [
-    createData('Section1', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section2', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section3', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section4', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section5', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section6', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section7', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section8', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section9', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section10', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section11', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section12', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
-    createData('Section13', 'Perumahan #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...'),
+    createData(
+        'Section1',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section2',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section3',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section4',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section5',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section6',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section7',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section8',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section9',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section10',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section11',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section12',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
+    createData(
+        'Section13',
+        'Perumahan #1',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
+    ),
 ];
-
 
 export default function SectionPage() {
     return (
         <div>
-            <CustomNavbar/>
-            <CustomTable title={title} headCells={headCells} rows={rows}/>
+            {/* <CustomNavbar/>
+            <CustomTable title={title} headCells={headCells} rows={rows}/> */}
+            <CreateNewSection />
         </div>
     );
 }
