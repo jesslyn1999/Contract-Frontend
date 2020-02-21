@@ -36,24 +36,30 @@ const rows = [
 
 
 export default function SectionPage() {
-    const [page, setPage] = React.useState(0);
-    const [stateRows, setStateRows] = useState([]);
+    const [page, setPage] = useState(1);
+    const [stateRows, setStateRows] = useState();
     useEffect(() => {
         const fetchSections = async (numPage, perPage) => {
+            console.log("test in fetch ", numPage, perPage)
             getSectionsPagination(numPage, perPage)
                 .then(res => {
-                    setStateRows(res)
+                    setStateRows(res.data);
                 })
                 .catch(err => {
-                    console.log("Error in FeaturedCatalogue.\n", err);
+                    console.log("Error get section list.\n", err);
                 });
         };
         fetchSections(page, 3);
     }, [page]);
     return (
         <div>
+        {stateRows ?
+            <div>
             <CustomNavbar/>
             <CustomTable title={title} headCells={headCells} rows={stateRows} page={page} setPage={setPage}/>
+            </div> 
+            :
+        null}
         </div>
     );
 }

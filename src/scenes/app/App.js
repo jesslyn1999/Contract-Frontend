@@ -19,7 +19,7 @@ export const App = () => {
                     )}
                 />
                 <Route key="admin" exact path="/admin" render={AdminPage}/>
-                <Route key="section" exact path="/section" render={SectionPage}/>
+                <Route key="section" exact path="/section" component={SectionPage}/>
             </Switch>
         </BrowserRouter>
     );
