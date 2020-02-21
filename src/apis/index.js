@@ -1,3 +1,3 @@
-import * as user from './User.js';
+import * as user from './Section.js';
 
 export default { user };
