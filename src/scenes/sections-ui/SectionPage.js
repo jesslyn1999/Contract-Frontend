@@ -10,11 +10,11 @@ function createData(id, name, context) {
 const title = 'List of Sections';
 
 const headCells = [
-    { id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-    { id: 'context', numeric: false, disablePadding: false, label: 'Context' },
+    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
+    { id: 'content', numeric: false, disablePadding: false, label: 'Content' },
     { id: 'setting', numeric: false, disablePadding: false, label: '' },
 ];
+
 
 /*
 const rows = [
@@ -36,14 +36,19 @@ const rows = [
 
 
 export default function SectionPage() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [stateRows, setStateRows] = useState();
     useEffect(() => {
         const fetchSections = async (numPage, perPage) => {
             console.log("test in fetch ", numPage, perPage)
-            getSectionsPagination(numPage, perPage)
+            getSectionsPagination(numPage+1, perPage)
                 .then(res => {
-                    setStateRows(res.data);
+                    setStateRows(res.data.map(items => {
+                        let temp = {};
+                        temp.title = items.title;
+                        temp.content = items.content;
+                        return temp;
+                    }));
                 })
                 .catch(err => {
                     console.log("Error get section list.\n", err);

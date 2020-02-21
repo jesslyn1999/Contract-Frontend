@@ -176,14 +176,14 @@ export default function EnhancedTable(props) {
                                         <TableRow
                                             hover
                                             tabIndex={-1}
-                                            key={row.username}
+                                            key={row.title}
                                         >
                                             {Object.keys(row).map((k, index) => (index === 0 ?
-                                                    <TableCell component="th" id={labelId} scope="row">
+                                                    <TableCell key={k+index} component="th" id={labelId} scope="row">
                                                         {row[k]}
                                                     </TableCell>
                                                     :
-                                                    <TableCell align="left">{row[k]}</TableCell>
+                                                    <TableCell key={k+index} align="left">{row[k]}</TableCell>
                                             ))}
                                             <TableCell align="center">
                                                 <CustomSettingButton/>
