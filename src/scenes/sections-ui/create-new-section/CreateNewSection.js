@@ -6,15 +6,19 @@ import apis from 'apis';
 import './CreateNewSection.scss';
 import 'react-progress-button/react-progress-button.css';
 import ProgressButton from 'react-progress-button';
+import PropTypes from 'prop-types';
 
-const saveFunction = sectionData =>
+const saveFunction = (sectionData, close) =>
     new Promise((resolve, reject) => {
         let time = new Date();
         apis.section
             .addNewSection(sectionData)
             .then(res => {
                 let processingTime = new Date() - time;
-                setTimeout(resolve, Math.max(0, 1000 - processingTime));
+                setTimeout(() => {
+                    resolve();
+                    setTimeout(close, 500);
+                }, Math.max(0, 1000 - processingTime));
             })
             .catch(err => {
                 let processingTime = new Date() - time;
@@ -22,14 +26,15 @@ const saveFunction = sectionData =>
             });
     });
 
-const CreateNewSection = () => {
+const CreateNewSection = props => {
+    const { triggerContent } = props;
     const [sectionData, setSectionData] = useState({ title: '', content: '' });
     const [savingState, setSavingState] = useState();
 
     return (
         <Popup
             modal
-            trigger={<button> Trigger</button>}
+            trigger={triggerContent}
             position="right center"
             style={{ borderRadius: '10px' }}
         >
@@ -37,7 +42,7 @@ const CreateNewSection = () => {
                 <div className="new_section_container">
                     <div className="modal_title">Buat Section Baru</div>
                     <div className="input_judul_container">
-                        <div className="input_judul_label">Judul: </div>
+                        <div className="input_judul_label">Judul:</div>
                         <input
                             className="judul_input"
                             placeholder="Masukkan judul section"
@@ -74,7 +79,7 @@ const CreateNewSection = () => {
 
                     <div className="prompt_button_container">
                         <ProgressButton
-                            onClick={() => saveFunction(sectionData)}
+                            onClick={() => saveFunction(sectionData, close)}
                             className="prompt_button"
                         >
                             Submit
@@ -95,6 +100,10 @@ const CreateNewSection = () => {
             )}
         </Popup>
     );
+};
+
+CreateNewSection.propTypes = {
+    triggerContent: PropTypes.func.isRequired,
 };
 
 export default CreateNewSection;

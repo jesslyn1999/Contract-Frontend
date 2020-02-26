@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,29 +13,36 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import CustomSettingButton from './CustomSettingButton';
+import SectionSettingButton from './SectionSettingButton';
+import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
 
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
     const { title } = props;
 
     return (
-        <Toolbar
-            className={clsx(classes.root, null)}
-        >
+        <Toolbar className={clsx(classes.root, null)}>
             <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
                 {title}
             </Typography>
-            <Tooltip title="Filter list">
-                <IconButton href="" aria-label="filter list">
-                    <FilterListIcon/>
-                </IconButton>
-            </Tooltip>
+            <CreateNewSection
+                triggerContent={() => (
+                    <Tooltip title="Add Section" enterDelay={500} leaveDelay={100}>
+                        <IconButton href="" aria-label="Add Section">
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                )}
+            />
         </Toolbar>
     );
+};
+
+EnhancedTableToolbar.propTypes = {
+    title: PropTypes.string.isRequired,
 };
 
 function descendingComparator(a, b, orderBy) {
@@ -126,12 +133,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function EnhancedTable(props) {
-    const { title, headCells, rows } = props;
+    const {
+        title,
+        headCells,
+        rows,
+        page,
+        setPage,
+        rowsPerPage,
+        setRowsPerPage,
+        totalPages,
+    } = props;
     const classes = useStyles();
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState(headCells[1] ? headCells[1].label : '');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -148,62 +162,71 @@ export default function EnhancedTable(props) {
         setPage(0);
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar title={title}/>
+                <EnhancedTableToolbar title={title} />
                 <TableContainer>
-                    <Table
-                        aria-labelledby="tableTitle"
-                        size="small"
-                        aria-label="enhanced table"
-                    >
+                    <Table aria-labelledby="tableTitle" size="small" aria-label="enhanced table">
                         <EnhancedTableHead
                             classes={classes}
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            headCells={headCells}
+                            headCells={headCells.slice(1)}
                         />
                         <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                                    return (
-                                        <TableRow
-                                            hover
-                                            tabIndex={-1}
-                                            key={row.username}
-                                        >
-                                            {Object.keys(row).map((k, index) => (index === 0 ?
-                                                    <TableCell component="th" id={labelId} scope="row">
+                            {stableSort(rows, getComparator(order, orderBy)).map(row => {
+                                return (
+                                    <TableRow hover tabIndex={-1} key={row[Object.keys(row)[0]]}>
+                                        {Object.keys(row).map(
+                                            (k, index) =>
+                                                index > 0 &&
+                                                (index === 1 ? (
+                                                    <TableCell
+                                                        component="th"
+                                                        key={
+                                                            row[Object.keys(row)[0]] +
+                                                            row[k].substring(0, 50)
+                                                        }
+                                                        scope="row"
+                                                    >
                                                         {row[k]}
                                                     </TableCell>
-                                                    :
-                                                    <TableCell align="left">{row[k]}</TableCell>
-                                            ))}
-                                            <TableCell align="center">
-                                                <CustomSettingButton/>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                                ) : (
+                                                    <TableCell
+                                                        align="left"
+                                                        key={
+                                                            row[Object.keys(row)[0]] +
+                                                            row[k].substring(0, 50)
+                                                        }
+                                                    >
+                                                        {row[k]}
+                                                    </TableCell>
+                                                )),
+                                        )}
+                                        <TableCell align="center">
+                                            <SectionSettingButton
+                                                rowId={row[Object.keys(row)[0]]}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
                             {emptyRows > 0 && (
                                 <TableRow style={{ height: 61 * emptyRows }}>
-                                    <TableCell colSpan={6}/>
+                                    <TableCell colSpan={6} />
                                 </TableRow>
                             )}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[5, 10, 50, 100]}
                     component="div"
-                    count={rows.length}
+                    count={totalPages * rowsPerPage} // todo
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -213,3 +236,14 @@ export default function EnhancedTable(props) {
         </div>
     );
 }
+
+EnhancedTable.propTypes = {
+    title: PropTypes.string.isRequired,
+    headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
+    rows: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first key of the object in array is Id
+    page: PropTypes.number.isRequired,
+    setPage: PropTypes.func.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+    setRowsPerPage: PropTypes.func.isRequired,
+    totalPages: PropTypes.number.isRequired,
+};
