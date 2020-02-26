@@ -1,94 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomTable from 'components/material-ui/CustomTable';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
-import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
-function createData(id, name, context) {
-    return { id, name, context };
-}
+import { getSections } from 'apis/Section';
 
-const title = 'List of Sections';
-
-const headCells = [
-    { id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-    { id: 'context', numeric: false, disablePadding: false, label: 'Context' },
-    { id: 'setting', numeric: false, disablePadding: false, label: '' },
-];
-
-const rows = [
-    createData(
-        'Section1',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section2',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section3',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section4',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section5',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section6',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section7',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section8',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section9',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section10',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section11',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section12',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-    createData(
-        'Section13',
-        'Perumahan #1',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula urna rutrum risus pretium...',
-    ),
-];
 
 export default function SectionPage() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalPages, setTotalPages] = useState(0);
+    const [headCells, setHeadCells] = useState([]);
+    const [rows, setRows] = useState([]);
+
+    const title = 'List of Sections';
+
+    useEffect(() => {
+        const fetchSections = async (currPage, perPage) => {
+            setIsLoading(true);
+            getSections(currPage + 1, perPage)
+                .then(res => {
+                    const { data, pages } = res;  // todo
+                    let headCellsTemp = [];
+                    if (data.length > 0) {
+                        Object.keys(data[0]).forEach((value) => {
+                            headCellsTemp.push({
+                                id: value,
+                                numeric: false,
+                                disablePadding: false,
+                                label: value,
+                            });
+                        });
+                        headCellsTemp.push({ id: 'setting', numeric: false, disablePadding: false, label: '' });
+                    }
+                    setHeadCells([...headCellsTemp]);
+                    setRows(data);
+                    setTotalPages(pages);
+                })
+                .catch(err => {
+                    console.log('Error in fetchSections.\n', err);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        };
+        fetchSections(page, rowsPerPage);
+    }, [page, rowsPerPage]);
     return (
         <div>
-            {/* <CustomNavbar/>
-            <CustomTable title={title} headCells={headCells} rows={rows}/> */}
-            <CreateNewSection />
+            <CustomNavbar/>
+            {!isLoading ?
+                    <CustomTable title={title} headCells={headCells} rows={rows}
+                                 page={page} setPage={setPage}
+                                 rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}
+                                 totalPages={totalPages}
+                    />
+                :
+                <div>
+                    waiting...
+                </div>
+            }
         </div>
     );
 }

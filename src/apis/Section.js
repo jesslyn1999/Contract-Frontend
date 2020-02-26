@@ -18,4 +18,41 @@ const addNewSection = sectionData => {
     });
 };
 
-export { addNewSection };
+const getSections = (currPage, perPage) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL:  process.env.REACT_APP_BACKEND_URL,
+            url: '/section/' + currPage,
+            withCredentials: true,
+            params: {
+                "perpage": perPage,
+            }
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
+
+const deleteSectionById = (id) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'delete',
+            baseURL:  process.env.REACT_APP_BACKEND_URL,
+            url: '/section/' + id,
+            withCredentials: true
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
+
+export { addNewSection, getSections, deleteSectionById};

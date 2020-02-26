@@ -1,5 +1,5 @@
 import React from 'react';
-import {fade, makeStyles} from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,7 +14,9 @@ const useStyles = makeStyles(theme => ({
         minWidth: theme.spacing(90),
     },
     toolbar: {
-        minWidth: theme.spacing(90),
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: theme.spacing(126),
     },
     search: {
         position: 'relative',
@@ -48,24 +50,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
 export default function CustomNavbar(props) {
     const classes = useStyles();
 
     return (
-        <AppBar position="sticky"  className={classes.appBar}>
+        <AppBar position="sticky" className={classes.appBar}>
             <Toolbar className={classes.toolbar}>
-                <IconButton
-                    edge="start"
-                    color="inherit"
-                    aria-label="open drawer"
-                >
-                    <MenuIcon/>
+                <IconButton edge="start" color="inherit" aria-label="open drawer">
+                    <MenuIcon />
                 </IconButton>
 
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
-                        <SearchIcon/>
+                        <SearchIcon />
                     </div>
                     <InputBase
                         fullWidth
@@ -74,10 +71,9 @@ export default function CustomNavbar(props) {
                             root: classes.inputRoot,
                             input: classes.inputInput,
                         }}
-                        inputProps={{'aria-label': 'search'}}
+                        inputProps={{ 'aria-label': 'search' }}
                     />
                 </div>
-
             </Toolbar>
         </AppBar>
     );
