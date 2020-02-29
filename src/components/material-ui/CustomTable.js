@@ -72,7 +72,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-    const { headCells, order, orderBy, onRequestSort } = props;
+    const { headCells, order, orderBy, onRequestSort, columnWidths } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };
@@ -80,7 +80,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {headCells.map(headCell => (
+                {headCells.map((headCell, index) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
@@ -92,6 +92,7 @@ function EnhancedTableHead(props) {
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
+                            style={{ width: columnWidths[index] }}
                         >
                             {headCell.label}
                         </TableSortLabel>
@@ -103,6 +104,7 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
+    columnWidths: PropTypes.arrayOf(PropTypes.number).isRequired,
     onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
@@ -134,7 +136,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function EnhancedTable(props) {
     const {
+        columnWidths,
         title,
+        isLoading,
         headCells,
         rows,
         page,
@@ -175,52 +179,65 @@ export default function EnhancedTable(props) {
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            headCells={headCells.slice(1)}
+                            headCells={headCells}
+                            columnWidths={columnWidths}
                         />
-                        <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy)).map(row => {
-                                return (
-                                    <TableRow hover tabIndex={-1} key={row[Object.keys(row)[0]]}>
-                                        {Object.keys(row).map(
-                                            (k, index) =>
-                                                index > 0 &&
-                                                (index === 1 ? (
-                                                    <TableCell
-                                                        component="th"
-                                                        key={
-                                                            row[Object.keys(row)[0]] +
-                                                            row[k].substring(0, 50)
-                                                        }
-                                                        scope="row"
-                                                    >
-                                                        {row[k]}
-                                                    </TableCell>
-                                                ) : (
-                                                    <TableCell
-                                                        align="left"
-                                                        key={
-                                                            row[Object.keys(row)[0]] +
-                                                            row[k].substring(0, 50)
-                                                        }
-                                                    >
-                                                        {row[k]}
-                                                    </TableCell>
-                                                )),
-                                        )}
-                                        <TableCell align="center">
-                                            <SectionSettingButton
-                                                rowId={row[Object.keys(row)[0]]}
-                                            />
-                                        </TableCell>
+                        {!isLoading ? (
+                            <TableBody>
+                                {stableSort(rows, getComparator(order, orderBy)).map(row => {
+                                    return (
+                                        <TableRow
+                                            hover
+                                            tabIndex={-1}
+                                            key={row[Object.keys(row)[0]]}
+                                        >
+                                            {Object.keys(row).map(
+                                                (k, index) =>
+                                                    index > 0 &&
+                                                    (index === 1 ? (
+                                                        <TableCell
+                                                            component="th"
+                                                            key={row[Object.keys(row)[0]] + index}
+                                                            scope="row"
+                                                            style={{
+                                                                width: columnWidths[index - 1],
+                                                            }}
+                                                        >
+                                                            {row[k]}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell
+                                                            align="left"
+                                                            key={row[Object.keys(row)[0]] + index}
+                                                            style={{
+                                                                width: columnWidths[index - 1],
+                                                            }}
+                                                        >
+                                                            {row[k]}
+                                                        </TableCell>
+                                                    )),
+                                            )}
+                                            <TableCell align="center">
+                                                <SectionSettingButton
+                                                    rowId={row[Object.keys(row)[0]]}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 61 * emptyRows }}>
+                                        <TableCell colSpan={6} />
                                     </TableRow>
-                                );
-                            })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: 61 * emptyRows }}>
-                                    <TableCell colSpan={6} />
+                                )}
+                            </TableBody>
+                        ) : (
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>waiting...</TableCell>
                                 </TableRow>
-                            )}
-                        </TableBody>
+                            </TableBody>
+                        )}
                     </Table>
                 </TableContainer>
                 <TablePagination
@@ -238,6 +255,7 @@ export default function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
+    columnWidths: PropTypes.arrayOf(PropTypes.number).isRequired,
     title: PropTypes.string.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
     rows: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first key of the object in array is Id

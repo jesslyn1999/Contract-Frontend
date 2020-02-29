@@ -18,16 +18,17 @@ const addNewSection = sectionData => {
     });
 };
 
-const getSections = (currPage, perPage) => {
+const getSections = (currPage, perPage, find = null) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
-            baseURL:  process.env.REACT_APP_BACKEND_URL,
+            baseURL: process.env.REACT_APP_BACKEND_URL,
             url: '/section/' + currPage,
             withCredentials: true,
             params: {
-                "perpage": perPage,
-            }
+                perpage: perPage,
+                find: find,
+            },
         })
             .then(({ data }) => {
                 resolve(data);
@@ -38,13 +39,13 @@ const getSections = (currPage, perPage) => {
     });
 };
 
-const deleteSectionById = (id) => {
+const deleteSectionById = id => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'delete',
-            baseURL:  process.env.REACT_APP_BACKEND_URL,
+            baseURL: process.env.REACT_APP_BACKEND_URL,
             url: '/section/' + id,
-            withCredentials: true
+            withCredentials: true,
         })
             .then(({ data }) => {
                 resolve(data);
@@ -54,5 +55,6 @@ const deleteSectionById = (id) => {
             });
     });
 };
+
 
 export { addNewSection, getSections, deleteSectionById};
