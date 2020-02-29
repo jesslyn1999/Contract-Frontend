@@ -9,14 +9,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import { deleteSectionById } from 'apis/Section';
 
-function createData(name, key, goToPath) {
-    return { name, key, goToPath };
-}
+// function createData(name, key, goToPath) {
+//     return { name, key, goToPath };
+// }
 
-const options = [
-    createData('Edit', 'edit', ''),
-    createData('Delete', 'delete', ''),
-];
+// const options = [
+//     createData('Edit', 'edit', ''),
+//     createData('Delete', 'delete', ''),
+// ];
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -47,8 +47,13 @@ export default function SectionSettingButton(props) {
     return (
         <React.Fragment>
             <Tooltip title="setting" enterDelay={500} leaveDelay={100} arrow>
-                <IconButton href="" aria-label="setting button" component="span" onClick={handleClick}>
-                    <SettingsIcon/>
+                <IconButton
+                    href=""
+                    aria-label="setting button"
+                    component="span"
+                    onClick={handleClick}
+                >
+                    <SettingsIcon />
                 </IconButton>
             </Tooltip>
             <Popover
@@ -67,26 +72,28 @@ export default function SectionSettingButton(props) {
                 className={classes.popover}
             >
                 <List component="nav" aria-label="setting options" className={classes.list}>
-                    <ListItem component="div" button key="edit" className={classes.listItemButton}
-                    >
-                        <ListItemText primary="Edit"/>
+                    <ListItem component="div" button key="edit" className={classes.listItemButton}>
+                        <ListItemText primary="Edit" />
                     </ListItem>
-                    <ListItem component="div" button key="delete" className={classes.listItemButton}
-                              onClick={() => {
-                                  deleteSectionById(rowId)
-                                      .then(() => {
-                                          alert('One Section Deleted');
-                                      })
-                                      .catch(() => {
-                                          alert('Can\'t be deleted !');
-                                      })
-                                      .finally(() => {
-                                          window.location.reload();
-                                      });
-
-                              }}
+                    <ListItem
+                        component="div"
+                        button
+                        key="delete"
+                        className={classes.listItemButton}
+                        onClick={() => {
+                            deleteSectionById(rowId)
+                                .then(() => {
+                                    alert('One Section Deleted');
+                                })
+                                .catch(() => {
+                                    alert("Can't be deleted !");
+                                })
+                                .finally(() => {
+                                    window.location.reload();
+                                });
+                        }}
                     >
-                        <ListItemText primary="Delete"/>
+                        <ListItemText primary="Delete" />
                     </ListItem>
                 </List>
             </Popover>

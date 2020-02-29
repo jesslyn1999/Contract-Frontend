@@ -28,7 +28,7 @@ const saveFunction = (sectionData, close) =>
 
 const CreateNewSection = props => {
     const { triggerContent } = props;
-    const [sectionData, setSectionData] = useState({ title: '', content: '' });
+    const [sectionData, setSectionData] = useState({ title: '', description: '', content: '' });
     const [savingState, setSavingState] = useState();
 
     return (
@@ -50,6 +50,18 @@ const CreateNewSection = props => {
                             onChange={e => {
                                 let newTitle = e.target.value;
                                 setSectionData(old => ({ ...old, title: newTitle }));
+                            }}
+                        />
+                    </div>
+                    <div className="input_judul_container">
+                        <div className="input_judul_label">Deskripsi:</div>
+                        <input
+                            className="judul_input"
+                            placeholder="Masukkan deskripsi section"
+                            value={sectionData.description}
+                            onChange={e => {
+                                let newDesc = e.target.value;
+                                setSectionData(old => ({ ...old, description: newDesc }));
                             }}
                         />
                     </div>
@@ -101,6 +113,7 @@ const CreateNewSection = props => {
         </Popup>
     );
 };
+
 
 CreateNewSection.propTypes = {
     triggerContent: PropTypes.func.isRequired,
