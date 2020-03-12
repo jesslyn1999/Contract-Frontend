@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CustomCard from 'components/material-ui/CustomCard';
@@ -7,6 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Pagination from '@material-ui/lab/Pagination';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,6 +22,14 @@ const useStyles = makeStyles(theme => ({
     },
     grid: {
         padding: theme.spacing(4),
+    },
+    title: {
+        flex: '1 1 100%',
+    },
+    toolbar: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(1),
+        paddingBottom: theme.spacing(2)
     }
 }));
 
@@ -33,11 +46,19 @@ function DocumentsPage() {
         <div>
             <CustomNavbar handleSearch={() => {}} />
             <div className={classes.root}>
-                <Typography variant="h4" gutterBottom>
-                    <Box fontWeight="fontWeightBold">
-                        Daftar Dokumen
-                    </Box>
-                </Typography>
+                <Toolbar className={clsx(classes.toolbar, null)}>
+                    <Typography className={classes.title} variant="h4" gutterBottom>
+                            <Box fontWeight="fontWeightBold">
+                                Daftar Template
+                            </Box>
+                    </Typography>
+                    <Tooltip title="Add Template" enterDelay={500} leaveDelay={100}>
+                        <IconButton href="" aria-label="Add Template">
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Toolbar>
+                
                 <Grid container spacing={3}>
                     {documents.map(row => (
                         <Grid className={classes.grid} item xs={4}>
