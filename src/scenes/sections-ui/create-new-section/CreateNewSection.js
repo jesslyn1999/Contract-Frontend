@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import CustomBuild from 'ckeditor5-itb-ppl';
 import Popup from 'reactjs-popup';
@@ -27,9 +27,12 @@ const saveFunction = (sectionData, close) =>
     });
 
 const CreateNewSection = props => {
-    const { triggerContent } = props;
-    const [sectionData, setSectionData] = useState({ title: '', description: '', content: '' });
-    const [savingState, setSavingState] = useState();
+    const { triggerContent, data } = props;
+    const [sectionData, setSectionData] = useState(data);
+
+    useEffect(() => {
+        setSectionData(data);
+    }, [data]);
 
     return (
         <Popup
@@ -46,7 +49,7 @@ const CreateNewSection = props => {
                         <input
                             className="judul_input"
                             placeholder="Masukkan judul section"
-                            value={sectionData.title}
+                            value={sectionData.title || ''}
                             onChange={e => {
                                 let newTitle = e.target.value;
                                 setSectionData(old => ({ ...old, title: newTitle }));
@@ -58,9 +61,10 @@ const CreateNewSection = props => {
                         <input
                             className="judul_input"
                             placeholder="Masukkan deskripsi section"
-                            value={sectionData.description}
+                            value={sectionData.description || ''}
                             onChange={e => {
                                 let newDesc = e.target.value;
+                                console.log('r u change');
                                 setSectionData(old => ({ ...old, description: newDesc }));
                             }}
                         />
@@ -116,7 +120,7 @@ const CreateNewSection = props => {
 
 
 CreateNewSection.propTypes = {
-    triggerContent: PropTypes.func.isRequired,
+    triggerContent: PropTypes.func.isRequired
 };
 
 export default CreateNewSection;

@@ -39,6 +39,28 @@ const getSections = (currPage, perPage, find = null) => {
     });
 };
 
+const getSectionById = (id) => {
+    console.log("getsectionbyid is called with id=", id);
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: process.env.REACT_APP_BACKEND_URL,
+            url: '/section',
+            withCredentials: true,
+            params: {
+                id: id,
+            },
+        })
+            .then(({ data }) => {
+                console.log(data);
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
+
 const deleteSectionById = id => {
     return new Promise((resolve, reject) => {
         axios({
@@ -57,4 +79,4 @@ const deleteSectionById = id => {
 };
 
 
-export { addNewSection, getSections, deleteSectionById};
+export { addNewSection, getSections, deleteSectionById, getSectionById};

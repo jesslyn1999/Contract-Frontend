@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { withRouter, useHistory } from 'react-router-dom';
 import CustomTable from 'components/material-ui/CustomTable';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import { getSections } from 'apis/Section';
 import { parse, stringify } from 'qs';
 import useTheme from '@material-ui/core/styles/useTheme';
+import themePage from 'scenes/theme';
 
 function SectionPage(props) {
     const theme = useTheme();
@@ -20,17 +22,11 @@ function SectionPage(props) {
 
     const headCells = [
         { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-        {
-            id: 'description',
-            numeric: false,
-            disablePadding: false,
-            label: 'Description',
-        },
-        { id: 'content', numeric: false, disablePadding: false, label: 'Content' },
+        { id: 'description', numeric: false, disablePadding: false, label: 'Description' },
         { id: 'setting', numeric: false, disablePadding: false, label: '' },
     ];
 
-    const columnWidths = [theme.spacing(15), theme.spacing(15), theme.spacing(65)];
+    const columnWidths = [theme.spacing(30), theme.spacing(65)];
 
     const handleSearch = find => event => {
         event.preventDefault();
@@ -56,7 +52,6 @@ function SectionPage(props) {
                         _id: item['_id'],
                         title: item['title'],
                         description: item['description'],
-                        content: item['content'],
                     }));
                     setRows(data_temp);
                     setTotalPages(pages);
@@ -72,8 +67,8 @@ function SectionPage(props) {
     }, [page, rowsPerPage, query]);
 
     return (
-        <div>
-            <CustomNavbar handleSearch={handleSearch} />
+        <ThemeProvider theme={themePage}>
+            <CustomNavbar />
             <CustomTable
                 columnWidths={columnWidths}
                 title={title}
@@ -85,8 +80,9 @@ function SectionPage(props) {
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
                 totalPages={totalPages}
+                handleSearch={handleSearch}
             />
-        </div>
+        </ThemeProvider>
     );
 }
 

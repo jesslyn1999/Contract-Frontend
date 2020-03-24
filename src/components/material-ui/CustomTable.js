@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,19 +18,45 @@ import SectionSettingButton from './SectionSettingButton';
 import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 
 const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
-    const { title } = props;
+    const { title, handleSearch } = props;
+    const [query, setQuery] = useState('');
 
     return (
         <Toolbar className={clsx(classes.root, null)}>
             <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
                 {title}
             </Typography>
+            <div className={classes.searchBar}>
+                <Paper component="form" className={classes.search} onSubmit={handleSearch(query)}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon />
+                    </div>
+                    <InputBase
+                        fullWidth
+                        placeholder="Search ..."
+                        value={query}
+                        onChange={event => setQuery(event.target.value)}
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                    />
+                </Paper>
+            </div>
             <CreateNewSection
                 triggerContent={() => (
-                    <Tooltip title="Add Section" enterDelay={500} leaveDelay={100}>
+                    <Tooltip
+                        title="Add Section"
+                        className={classes.plusIcon}
+                        enterDelay={500}
+                        leaveDelay={100}
+                    >
                         <IconButton href="" aria-label="Add Section">
                             <AddIcon />
                         </IconButton>
@@ -43,6 +69,7 @@ const EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
     title: PropTypes.string.isRequired,
+    handleSearch: PropTypes.func.isRequired,
 };
 
 function descendingComparator(a, b, orderBy) {
@@ -83,7 +110,7 @@ function EnhancedTableHead(props) {
                 {headCells.map((headCell, index) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
+                        align="center"
                         padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -114,9 +141,53 @@ const useToolbarStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
+        flexWrap: 'wrap',
     },
     title: {
         flex: '1 1 100%',
+        textAlign: 'center',
+        fontSize: theme.spacing(4),
+        margin: theme.spacing(2, 0),
+    },
+    searchBar: {
+        flex: 1,
+        marginBottom: theme.spacing(5),
+    },
+    search: {
+        position: 'relative',
+        borderRadius: 50,
+        borderWidth: 'thin',
+        borderStyle: 'solid',
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        flexGrow: 1,
+        // minWidth: '50%',
+        maxWidth: theme.spacing(90),
+    },
+    plusIcon: {
+        alignSelf: 'stretch',
+        marginBottom: theme.spacing(5),
+    },
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        display: 'flex',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 3, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        fontSize: theme.spacing(2),
     },
 }));
 
@@ -134,7 +205,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function EnhancedTable(props) {
+export default function CustomTable(props) {
     const {
         columnWidths,
         title,
@@ -146,10 +217,11 @@ export default function EnhancedTable(props) {
         rowsPerPage,
         setRowsPerPage,
         totalPages,
+        handleSearch,
     } = props;
     const classes = useStyles();
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState(headCells[1] ? headCells[1].label : '');
+    const [orderBy, setOrderBy] = useState('');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -171,7 +243,7 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar title={title} />
+                <EnhancedTableToolbar title={title} handleSearch={handleSearch} />
                 <TableContainer>
                     <Table aria-labelledby="tableTitle" size="small" aria-label="enhanced table">
                         <EnhancedTableHead
@@ -254,7 +326,7 @@ export default function EnhancedTable(props) {
     );
 }
 
-EnhancedTable.propTypes = {
+CustomTable.propTypes = {
     columnWidths: PropTypes.arrayOf(PropTypes.number).isRequired,
     title: PropTypes.string.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
@@ -264,4 +336,5 @@ EnhancedTable.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
     totalPages: PropTypes.number.isRequired,
+    handleSearch: PropTypes.func.isRequired,
 };
