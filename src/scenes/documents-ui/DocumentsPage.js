@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Toolbar from '@material-ui/core/Toolbar';
+import { getAllTemplates } from 'apis/Template';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,15 +34,37 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const documents = [
-    ['SPPBJ1', 'Dokumen SPPBJ 1 bang'],
-    ['SPPBJ2', 'Dokumen SPPBJ 2 bang jasdhfkjahdjkf jkasdhf kzjhfkjdhaf k jasdh'],
-    ['SPPBJ3', 'Dokumen SPPBJ 3 gan'],
-    ['SPPBJ4', 'Dokumen SPPBJ 4 gan'],
-];
+// const documents = [
+//     ['SPPBJ1', 'Dokumen SPPBJ 1 bang'],
+//     ['SPPBJ2', 'Dokumen SPPBJ 2 bang jasdhfkjahdjkf jkasdhf kzjhfkjdhaf k jasdh'],
+//     ['SPPBJ3', 'Dokumen SPPBJ 3 gan'],
+//     ['SPPBJ4', 'Dokumen SPPBJ 4 gan'],
+// ];
 
 function DocumentsPage() {
     const classes = useStyles();
+    const [templates, setTemplates] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchTemplates = async () => {
+            getAllTemplates()
+                .then( res => {
+                    const { data } = res;
+                    const templatesData = data.map(item => ({
+                        _id: item['_id'],
+                        title: item['title'],
+                        description: item['description'],
+                        content: item['content'],
+                    }));
+                    setTemplates(templatesData);
+                })
+                .catch( err => {
+                    console.log('Error:',err);
+                })
+        };
+        fetchTemplates();
+    }, []);
+
     return (
         <div>
             <CustomNavbar handleSearch={() => {}} />
@@ -60,15 +83,18 @@ function DocumentsPage() {
                 </Toolbar>
                 
                 <Grid container spacing={3}>
-                    {documents.map(row => (
-                        <Grid className={classes.grid} item xs={4}>
-                            <CustomCard title={row[0]} content={row[1]} />
+                    {templates.map(row => (
+                        <Grid key={row._id} className={classes.grid} item xs={4}>
+                            <CustomCard title={row.title} content={row.description} />
                         </Grid>
                     ))}
+                    {
+                        console.log(templates)
+                    }
                 </Grid>
             </div>
             <Grid container justify = "center">
-                <Pagination centered count={1} color="primary" />
+                <Pagination centered="true" count={1} color="primary" />
             </Grid>
         </div>
     );
