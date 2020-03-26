@@ -34,21 +34,21 @@ export default function DocumentCard(props) {
 
     return (
         <Card className={classes.root}>
+            <CardHeader
+                classes = {{
+                    title: classes.title,
+                }}
+                action={
+                    <IconButton aria-label="delete">
+                        <Close />
+                    </IconButton>
+                }
+                title = {title}
+            />
             <CardActionArea>
-                <CardHeader
-                    classes = {{
-                        title: classes.title,
-                    }}
-                    action={
-                        <IconButton aria-label="delete">
-                            <Close />
-                        </IconButton>
-                    }
-                    title = {title}
-                />
                 <CardContent>
                     <Typography noWrap variant="body2" component="p" gutterBottom>
-                        {content}
+                        {content ? content : 'No Description'}
                     </Typography>
                 </CardContent>
             </CardActionArea>
