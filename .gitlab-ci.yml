@@ -1,10 +1,17 @@
+image: node
+
 stages:
-  - lint
+    - lint
 
-
-build_project:
+lint:
     stage: lint
     script:
-        - npm install
-        - npm run lint
+        - |
+            npm install eslint \
+            eslint-config-react-app \
+            eslint-plugin-flowtype \
+            eslint-plugin-import \
+            eslint-plugin-jsx-a11y \
+            eslint-plugin-react-app
+        - node_modules/eslint/bin/eslint.js .
 
