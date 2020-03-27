@@ -1,6 +1,7 @@
 stages:
   - lint
 
+
 build_project:
     stage: lint
     script:
