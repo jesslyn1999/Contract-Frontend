@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import CustomCard from 'components/material-ui/CustomCard';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Toolbar from '@material-ui/core/Toolbar';
 import { getAllTemplates } from 'apis/Template';
+import themePage from 'scenes/theme';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,16 +32,9 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
-        paddingBottom: theme.spacing(2)
-    }
+        paddingBottom: theme.spacing(2),
+    },
 }));
-
-// const documents = [
-//     ['SPPBJ1', 'Dokumen SPPBJ 1 bang'],
-//     ['SPPBJ2', 'Dokumen SPPBJ 2 bang jasdhfkjahdjkf jkasdhf kzjhfkjdhaf k jasdh'],
-//     ['SPPBJ3', 'Dokumen SPPBJ 3 gan'],
-//     ['SPPBJ4', 'Dokumen SPPBJ 4 gan'],
-// ];
 
 function DocumentsPage() {
     const classes = useStyles();
@@ -48,7 +43,7 @@ function DocumentsPage() {
     React.useEffect(() => {
         const fetchTemplates = async () => {
             getAllTemplates()
-                .then( res => {
+                .then(res => {
                     const { data } = res;
                     const templatesData = data.map(item => ({
                         _id: item['_id'],
@@ -58,22 +53,20 @@ function DocumentsPage() {
                     }));
                     setTemplates(templatesData);
                 })
-                .catch( err => {
-                    console.log('Error:',err);
-                })
+                .catch(err => {
+                    console.log('Error:', err);
+                });
         };
         fetchTemplates();
     }, []);
 
     return (
-        <div>
-            <CustomNavbar handleSearch={() => {}} />
+        <ThemeProvider theme={themePage}>
+            <CustomNavbar />
             <div className={classes.root}>
                 <Toolbar className={clsx(classes.toolbar, null)}>
                     <Typography className={classes.title} variant="h4" gutterBottom>
-                            <Box fontWeight="fontWeightBold">
-                                Daftar Template
-                            </Box>
+                        <Box fontWeight="fontWeightBold">Daftar Template</Box>
                     </Typography>
                     <Tooltip title="Add Template" enterDelay={500} leaveDelay={100}>
                         <IconButton href="" aria-label="Add Template">
@@ -81,22 +74,24 @@ function DocumentsPage() {
                         </IconButton>
                     </Tooltip>
                 </Toolbar>
-                
+
                 <Grid container spacing={3}>
                     {templates.map(row => (
                         <Grid key={row._id} className={classes.grid} item xs={4}>
-                            <CustomCard title={row.title} content={row.description} />
+                            <CustomCard
+                                title={row.title}
+                                content={row.description}
+                                templateId={row._id}
+                            />
                         </Grid>
                     ))}
-                    {
-                        console.log(templates)
-                    }
+                    {console.log(templates)}
                 </Grid>
             </div>
-            <Grid container justify = "center">
+            <Grid container justify="center">
                 <Pagination centered="true" count={1} color="primary" />
             </Grid>
-        </div>
+        </ThemeProvider>
     );
 }
 
