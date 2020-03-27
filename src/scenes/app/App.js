@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdminPage from 'scenes/administration-ui/AdminPage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
-import DocumentsPage from 'scenes/documents-ui/DocumentsPage';
+import TemplatesPage from 'scenes/templates-ui/TemplatesPage';
 
 import Login from '../components/login.component';
 
@@ -23,7 +23,7 @@ export const App = () => {
                 />
                 <Route key="admin" exact path="/admin" render={AdminPage} />
                 <Route key="section" exact path="/section" component={SectionPage} />
-                <Route key="document" exact path = "/documents" component={DocumentsPage} />
+                <Route key="template" exact path = "/template" component={TemplatesPage} />
                 <Route key={'login'} path="/login" component={Login} />
             </Switch>
         </BrowserRouter>
