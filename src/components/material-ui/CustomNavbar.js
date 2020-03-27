@@ -58,7 +58,12 @@ export default function CustomNavbar(props) {
                     </IconButton>
                 </Box>
             </Toolbar>
-            <CustomSideBarLeft openDrawer={openDrawerLeft} setOpenDrawer={setOpenDrawerLeft} />
+            <CustomSideBarLeft 
+                openDrawer={openDrawerLeft} 
+                setOpenDrawer={setOpenDrawerLeft} 
+                sideBarTexts={['Home', 'Templates', 'Sections']}
+                sideBarLinks={['/home', '/template', '/section']}
+            />
         </AppBar>
     );
 }
