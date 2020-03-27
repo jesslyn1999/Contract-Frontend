@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { deleteTemplateById } from 'apis/Template';
 
 const useStyles = makeStyles( {
     root: {
@@ -17,18 +18,19 @@ const useStyles = makeStyles( {
       maxHeight: 300,
     },
     title: {
-        color: "#003366",
+        color: "#00ACF8",
         fontWeight: "bold",
     },
     button: {
-        color: "#003366",
+        color: "#00ACF8",
     }
 });
 
 export default function DocumentCard(props) {
     const {
         title,
-        content
+        content,
+        templateId,
     } = props;
     const classes = useStyles();
 
@@ -39,7 +41,18 @@ export default function DocumentCard(props) {
                     title: classes.title,
                 }}
                 action={
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={() => {
+                        deleteTemplateById(templateId)
+                                .then(() => {
+                                    alert('One Template Deleted');
+                                })
+                                .catch(() => {
+                                    alert("Can't be Deleted !");
+                                })
+                                .finally(() => {
+                                    window.location.reload();
+                                });
+                    }}>
                         <Close />
                     </IconButton>
                 }
