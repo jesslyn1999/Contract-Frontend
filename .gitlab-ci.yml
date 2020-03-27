@@ -1,0 +1,9 @@
+stages:
+  - lint
+
+build_project:
+    stage: lint
+    script:
+        - npm install
+        - npm run lint
+
