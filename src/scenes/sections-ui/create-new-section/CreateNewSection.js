@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import CustomBuild from 'ckeditor5-itb-ppl';
+// import CustomBuild from 'ckeditor5-custom-build2';
 import Popup from 'reactjs-popup';
 import apis from 'apis';
 import './CreateNewSection.scss';
@@ -28,10 +29,12 @@ const saveFunction = (sectionData, close) =>
 
 const CreateNewSection = props => {
     const { triggerContent, data } = props;
-    const [sectionData, setSectionData] = useState(data);
+    const [sectionData, setSectionData] = useState({ title: '', description: '', content: '' });
 
     useEffect(() => {
-        setSectionData(data);
+        if (data) {
+            setSectionData(data);
+        }
     }, [data]);
 
     return (
@@ -100,15 +103,7 @@ const CreateNewSection = props => {
                         >
                             Submit
                         </ProgressButton>
-                        <ProgressButton
-                            onClick={() =>
-                                new Promise((resolve, reject) => {
-                                    resolve();
-                                    close();
-                                })
-                            }
-                            className="prompt_button"
-                        >
+                        <ProgressButton onClick={close} className="prompt_button">
                             Cancel
                         </ProgressButton>
                     </div>
@@ -118,9 +113,8 @@ const CreateNewSection = props => {
     );
 };
 
-
 CreateNewSection.propTypes = {
-    triggerContent: PropTypes.func.isRequired
+    triggerContent: PropTypes.func.isRequired,
 };
 
 export default CreateNewSection;

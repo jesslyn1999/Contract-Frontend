@@ -1,4 +1,4 @@
 import * as user from './User.js';
 import * as section from './Section';
-
-export default { user, section };
+import * as template from './Template';
+export default { user, section, template };

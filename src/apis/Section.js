@@ -18,6 +18,26 @@ const addNewSection = sectionData => {
     });
 };
 
+const getAllSections = (keyword = '') => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: process.env.REACT_APP_BACKEND_URL,
+            url: '/section/all',
+            withCredentials: true,
+            params: {
+                keyword: keyword,
+            },
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
+
 const getSections = (currPage, perPage, find = null) => {
     return new Promise((resolve, reject) => {
         axios({
@@ -39,8 +59,8 @@ const getSections = (currPage, perPage, find = null) => {
     });
 };
 
-const getSectionById = (id) => {
-    console.log("getsectionbyid is called with id=", id);
+const getSectionById = id => {
+    console.log('getsectionbyid is called with id=', id);
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
@@ -78,5 +98,4 @@ const deleteSectionById = id => {
     });
 };
 
-
-export { addNewSection, getSections, deleteSectionById, getSectionById};
+export { addNewSection, getSections, deleteSectionById, getAllSections, getSectionById };

@@ -1,0 +1,43 @@
+.new_template_container {
+    display: flex;
+    flex-direction: column;
+    padding: 3em;
+    width: 100vw;
+    height: 100%;
+}
+
+.main_container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1em;
+}
+.section_insertor_container {
+    // flex: 5 auto 0px;
+    flex-basis: 0;
+    flex-grow: 2;
+}
+
+.ck_editor_container_template {
+    flex-basis: 0;
+    flex-grow: 5;
+    width: 0px;
+    padding-left: 4em;
+    overflow: hidden;
+    // flex: 2 auto 0px;
+}
+
+.ck-editor__editable_inline {
+    min-height: 30em;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+.new_template_container > .modal_title {
+    // width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 30px;
+    text-align: center;
+    padding: 5px;
+}
