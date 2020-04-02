@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function DocumentsPage() {
+function TemplateLanding() {
     const classes = useStyles();
     const [templates, setTemplates] = React.useState([]);
 
@@ -95,4 +95,4 @@ function DocumentsPage() {
     );
 }
 
-export default withRouter(DocumentsPage);
+export default withRouter(TemplateLanding);
