@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -36,7 +37,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function TemplateLanding() {
+function TemplateLanding(props) {
+    const {
+        setPage,
+    } = props;
     const classes = useStyles();
     const [templates, setTemplates] = React.useState([]);
 
@@ -69,7 +73,7 @@ function TemplateLanding() {
                         <Box fontWeight="fontWeightBold">Daftar Template</Box>
                     </Typography>
                     <Tooltip title="Add Template" enterDelay={500} leaveDelay={100}>
-                        <IconButton href="" aria-label="Add Template">
+                        <IconButton href="" aria-label="Add Template" onClick={ setPage }>
                             <AddIcon />
                         </IconButton>
                     </Tooltip>
@@ -95,4 +99,8 @@ function TemplateLanding() {
     );
 }
 
-export default withRouter(TemplateLanding);
+TemplateLanding.propTypes = {
+    setPage: PropTypes.func.isRequired,
+}
+
+export default TemplateLanding;
