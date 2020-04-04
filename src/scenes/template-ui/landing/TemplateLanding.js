@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TemplateLanding(props) {
-    const { setPage } = props;
+    const { setPage, dataHandle } = props;
     const classes = useStyles();
     const [templates, setTemplates] = React.useState([]);
     const [pageCount, setPageCount] = React.useState(1);
@@ -90,10 +90,10 @@ function TemplateLanding(props) {
                                 title={row.title}
                                 content={row.description}
                                 templateId={row._id}
+                                setObjData={dataHandle}
                             />
                         </Grid>
                     ))}
-                    {console.log(templates)}
                 </Grid>
             </div>
             <Grid container justify="center">
@@ -110,6 +110,7 @@ function TemplateLanding(props) {
 
 TemplateLanding.propTypes = {
     setPage: PropTypes.func.isRequired,
+    dataHandle: PropTypes.func.isRequired,
 };
 
 export default TemplateLanding;

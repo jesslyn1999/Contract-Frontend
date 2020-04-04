@@ -40,6 +40,26 @@ const getAllTemplates = (currPage, perPage = 3, find = null) => {
     });
 };
 
+const getTemplateById = id => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: process.env.REACT_APP_BACKEND_URL,
+            url: '/template',
+            withCredentials: true,
+            params: {
+                id: id,
+            },
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
+
 const deleteTemplateById = id => {
     return new Promise((resolve, reject) => {
         axios({
@@ -57,4 +77,4 @@ const deleteTemplateById = id => {
     });
 };
 
-export { addNewTemplate, getAllTemplates, deleteTemplateById };
+export { addNewTemplate, getAllTemplates, getTemplateById, deleteTemplateById };

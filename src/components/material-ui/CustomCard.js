@@ -10,39 +10,47 @@ import IconButton from '@material-ui/core/IconButton';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import { deleteTemplateById } from 'apis/Template';
+import { deleteTemplateById, getTemplateById } from 'apis/Template';
 
-const useStyles = makeStyles( {
+const useStyles = makeStyles({
     root: {
-      height: "100%",
-      maxHeight: 300,
+        height: '100%',
+        maxHeight: 300,
     },
     title: {
-        color: "#00ACF8",
-        fontWeight: "bold",
+        color: '#00ACF8',
+        fontWeight: 'bold',
     },
     button: {
-        color: "#00ACF8",
-    }
+        color: '#00ACF8',
+    },
 });
 
 export default function DocumentCard(props) {
-    const {
-        title,
-        content,
-        templateId,
-    } = props;
+    const { title, content, templateId, setObjData } = props;
     const classes = useStyles();
+
+    const handleEditClick = () => {
+        getTemplateById(templateId)
+            .then(res => {
+                setObjData({ ...res.data });
+            })
+            .catch(() => {
+                alert('Unknown error occured');
+            });
+    };
 
     return (
         <Card className={classes.root}>
             <CardHeader
-                classes = {{
+                classes={{
                     title: classes.title,
                 }}
                 action={
-                    <IconButton aria-label="delete" onClick={() => {
-                        deleteTemplateById(templateId)
+                    <IconButton
+                        aria-label="delete"
+                        onClick={() => {
+                            deleteTemplateById(templateId)
                                 .then(() => {
                                     alert('One Template Deleted');
                                 })
@@ -52,13 +60,14 @@ export default function DocumentCard(props) {
                                 .finally(() => {
                                     window.location.reload();
                                 });
-                    }}>
+                        }}
+                    >
                         <Close />
                     </IconButton>
                 }
-                title = {title}
+                title={title}
             />
-            <CardActionArea>
+            <CardActionArea onClick={handleEditClick}>
                 <CardContent>
                     <Typography noWrap variant="body2" component="p" gutterBottom>
                         {content ? content : 'No Description'}
@@ -66,7 +75,9 @@ export default function DocumentCard(props) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" className={classes.button}>Edit</Button>
+                <Button onClick={handleEditClick} size="small" className={classes.button}>
+                    Edit
+                </Button>
             </CardActions>
         </Card>
     );
@@ -74,5 +85,5 @@ export default function DocumentCard(props) {
 
 DocumentCard.propTypes = {
     title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired
-}
+    setObjData: PropTypes.func.isRequired,
+};
