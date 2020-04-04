@@ -18,7 +18,7 @@ const addNewTemplate = sectionData => {
     });
 };
 
-const getAllTemplates = (currPage = 1, perPage = 6, find = null) => {
+const getAllTemplates = (currPage, perPage = 3, find = null) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',

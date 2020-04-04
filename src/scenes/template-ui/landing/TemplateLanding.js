@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CustomCard from 'components/material-ui/CustomCard';
@@ -38,23 +37,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TemplateLanding(props) {
-    const {
-        setPage,
-    } = props;
+    const { setPage } = props;
     const classes = useStyles();
     const [templates, setTemplates] = React.useState([]);
+    const [pageCount, setPageCount] = React.useState(1);
+    const [currentPage, setCurrentPage] = React.useState(1);
 
     React.useEffect(() => {
         const fetchTemplates = async () => {
-            getAllTemplates()
+            getAllTemplates(currentPage)
                 .then(res => {
-                    const { data } = res;
+                    const { data, pages } = res;
                     const templatesData = data.map(item => ({
                         _id: item['_id'],
                         title: item['title'],
                         description: item['description'],
                         content: item['content'],
                     }));
+                    setPageCount(pages);
                     setTemplates(templatesData);
                 })
                 .catch(err => {
@@ -62,7 +62,11 @@ function TemplateLanding(props) {
                 });
         };
         fetchTemplates();
-    }, []);
+    }, [currentPage]);
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    }
 
     return (
         <ThemeProvider theme={themePage}>
@@ -73,7 +77,7 @@ function TemplateLanding(props) {
                         <Box fontWeight="fontWeightBold">Daftar Template</Box>
                     </Typography>
                     <Tooltip title="Add Template" enterDelay={500} leaveDelay={100}>
-                        <IconButton href="" aria-label="Add Template" onClick={ setPage }>
+                        <IconButton href="" aria-label="Add Template" onClick={setPage}>
                             <AddIcon />
                         </IconButton>
                     </Tooltip>
@@ -93,7 +97,12 @@ function TemplateLanding(props) {
                 </Grid>
             </div>
             <Grid container justify="center">
-                <Pagination centered="true" count={1} color="primary" />
+                <Pagination
+                    centered="true"
+                    count={pageCount}
+                    color="primary"
+                    onChange={handlePageChange}
+                />
             </Grid>
         </ThemeProvider>
     );
@@ -101,6 +110,6 @@ function TemplateLanding(props) {
 
 TemplateLanding.propTypes = {
     setPage: PropTypes.func.isRequired,
-}
+};
 
 export default TemplateLanding;
