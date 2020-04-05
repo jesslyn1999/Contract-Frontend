@@ -1,8 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { withRouter, useHistory } from 'react-router-dom';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { parse, stringify } from 'qs';
 import CustomCard from 'components/material-ui/CustomCard';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,8 +15,11 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Toolbar from '@material-ui/core/Toolbar';
-import { getAllTemplates } from 'apis/Template';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
 import themePage from 'scenes/theme';
+import { getAllTemplates } from 'apis/Template';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,6 +39,47 @@ const useStyles = makeStyles(theme => ({
         paddingRight: theme.spacing(1),
         paddingBottom: theme.spacing(2),
     },
+    searchBar: {
+        display: 'flex',
+        flex: 1,
+        marginBottom: theme.spacing(3),
+        justifyContent: 'center',
+    },
+    search: {
+        position: 'relative',
+        borderRadius: 50,
+        borderWidth: 'thin',
+        borderStyle: 'solid',
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        flexGrow: 1,
+        // minWidth: '70%',
+        maxWidth: theme.spacing(90),
+    },
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        display: 'flex',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 3, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        fontSize: theme.spacing(2),
+    },
+    pagination: {
+        padding: theme.spacing(3),
+    },
 }));
 
 function TemplateLanding(props) {
@@ -42,10 +88,15 @@ function TemplateLanding(props) {
     const [templates, setTemplates] = React.useState([]);
     const [pageCount, setPageCount] = React.useState(1);
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [query, setQuery] = React.useState(
+        parse(props.location.search, { ignoreQueryPrefix: true })['find'],
+    );
+    const [tempQuery, setTempQuery] = React.useState('');
+    const history = useHistory();
 
     React.useEffect(() => {
         const fetchTemplates = async () => {
-            getAllTemplates(currentPage)
+            getAllTemplates(currentPage, 6, query)
                 .then(res => {
                     const { data, pages } = res;
                     const templatesData = data.map(item => ({
@@ -62,11 +113,26 @@ function TemplateLanding(props) {
                 });
         };
         fetchTemplates();
-    }, [currentPage]);
+    }, [currentPage, query]);
 
-    const handlePageChange = (event, value) => {
+    const handlePageChange = (_, value) => {
         setCurrentPage(value);
-    }
+    };
+
+    const handleSearch = find => event => {
+        setQuery(find);
+        event.preventDefault();
+        history.push({
+            pathname: '/template',
+            search: stringify({
+                find: find,
+            }),
+        });
+    };
+
+    React.useEffect(() => {
+        setQuery((parse(props.location.search, { ignoreQueryPrefix: true }))['find']);
+    }, [props.location]);
 
     return (
         <ThemeProvider theme={themePage}>
@@ -82,6 +148,30 @@ function TemplateLanding(props) {
                         </IconButton>
                     </Tooltip>
                 </Toolbar>
+
+                <div centered="true" className={classes.searchBar}>
+                    <Paper
+                        centered="true"
+                        component="form"
+                        className={classes.search}
+                        onSubmit={handleSearch(tempQuery)}
+                    >
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            fullWidth
+                            placeholder="Search ..."
+                            value={tempQuery}
+                            onChange={event => setTempQuery(event.target.value)}
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </Paper>
+                </div>
 
                 <Grid container spacing={3}>
                     {templates.map(row => (
@@ -102,6 +192,7 @@ function TemplateLanding(props) {
                     count={pageCount}
                     color="primary"
                     onChange={handlePageChange}
+                    className={classes.pagination}
                 />
             </Grid>
         </ThemeProvider>
@@ -113,4 +204,4 @@ TemplateLanding.propTypes = {
     dataHandle: PropTypes.func.isRequired,
 };
 
-export default TemplateLanding;
+export default withRouter(TemplateLanding);
