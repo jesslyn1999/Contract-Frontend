@@ -1,4 +1,17 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.enable": false
+  "eslint.enable": false,
+  "eslint.options": {
+    "env":{
+        "es6":true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6 // or 7,8,9
+    }
+  },
+  
+  "jshint.options":{
+    "esversion":6
+  }
+
 }
