@@ -1,6 +1,7 @@
 import React from 'react';
 import CreateNewTemplate from 'scenes/template-ui/create-new-template/CreateNewTemplate';
 import TemplateLanding from 'scenes/template-ui/landing/TemplateLanding';
+import { getAllSections } from 'apis/Section';
 
 import './Template.scss';
 
@@ -13,7 +14,7 @@ const Template = () => {
     const modifyObjData = (data) => {
         setObjData(data);
         changePageState();
-    }
+    };
 
     const changePageState = () => {
         if ( pageState === 0) {
@@ -27,9 +28,9 @@ const Template = () => {
         return <TemplateLanding setPage={ changePageState } dataHandle={ modifyObjData } />
     } else {
         if (objData) {
-            return <CreateNewTemplate data={objData} />;
+            return <CreateNewTemplate data={objData} getContents={getAllSections} />;
         }
-        return <CreateNewTemplate />;
+        return <CreateNewTemplate getContents={getAllSections}/>;
     }
 };
 

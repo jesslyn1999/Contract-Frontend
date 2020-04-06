@@ -19,7 +19,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import themePage from 'scenes/theme';
-import { getAllTemplates } from 'apis/Template';
+import { getTemplates } from 'apis/Template';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -96,7 +96,7 @@ function TemplateLanding(props) {
 
     React.useEffect(() => {
         const fetchTemplates = async () => {
-            getAllTemplates(currentPage, 6, query)
+            getTemplates(currentPage, 6, query)
                 .then(res => {
                     const { data, pages } = res;
                     const templatesData = data.map(item => ({
