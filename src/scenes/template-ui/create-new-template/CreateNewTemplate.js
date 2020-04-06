@@ -12,6 +12,7 @@ import {
     TemplateNameInput,
     TemplateHeaderContainer,
 } from './CreateNewTemplateStyle';
+import PropTypes from 'prop-types';
 
 const insertionCallbackCreator = editor => content => {
     const htmlDP = editor.data.processor;
@@ -28,8 +29,8 @@ const insertionCallbackCreator = editor => content => {
     // lastElement.scrollIntoView({ behavior: 'smooth' });
 };
 
-const CreateNewSection = (props) => {
-    const { data } = props;
+const CreateNewSection = props => {
+    const { getContents, data } = props;
     const [templateData, setTemplateData] = useState({ title: '', description: '', content: '' });
     const [myEditor, setMyEditor] = useState();
 
@@ -58,7 +59,11 @@ const CreateNewSection = (props) => {
 
             <div className="main_container">
                 <div className="section_insertor_container">
-                    <SectionInsertor insertionCallback={insertionCallbackCreator(myEditor)} />
+                    <SectionInsertor
+                        header="Sections"
+                        insertionCallback={insertionCallbackCreator(myEditor)}
+                        getContents={getContents}
+                    />
                 </div>
                 <div className="ck_editor_container_template">
                     <CKEditor
@@ -82,6 +87,10 @@ const CreateNewSection = (props) => {
             </div>
         </div>
     );
+};
+
+CreateNewSection.propTypes = {
+    getContents: PropTypes.func.isRequired,
 };
 
 export default CreateNewSection;

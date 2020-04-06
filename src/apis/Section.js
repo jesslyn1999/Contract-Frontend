@@ -18,7 +18,7 @@ const addNewSection = sectionData => {
     });
 };
 
-const getAllSections = (keyword = '') => {
+const getAllSections = (source, keyword = '') => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
@@ -28,12 +28,14 @@ const getAllSections = (keyword = '') => {
             params: {
                 keyword: keyword,
             },
+            cancelToken: source? source.token : null,
         })
             .then(({ data }) => {
                 resolve(data);
             })
             .catch(err => {
-                reject(err);
+                if( axios.isCancel(err)) console.log("cancel request");
+                else reject(err);
             });
     });
 };

@@ -24,7 +24,7 @@ const NiceButton = ({ onClick, children, ...props }) => {
             if (ref.current && ref.current.getBoundingClientRect().height) {
                 setHeight(ref.current.getBoundingClientRect().height);
             }
-            console.log(children);
+            // console.log(children);
         },
         // children are a dep so dimensions are updated if initial contents change
         [children],

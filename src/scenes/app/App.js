@@ -3,8 +3,10 @@ import { StateProvider } from 'store/Store';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdminPage from 'scenes/administration-ui/AdminPage';
+import CandidatePage from 'scenes/candidates-ui/CandidatePage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
 import Template from 'scenes/template-ui/Template';
+import SelectTemplatePage from 'scenes/template-ui/create-new-template/SelectTemplatePage';
 
 import Login from '../components/login.component';
 
@@ -24,9 +26,16 @@ export const App = () => {
                         )}
                     />
                     <Route key="admin" exact path="/admin" render={AdminPage} />
+                    <Route key="candidate" exact path="/candidate" component={CandidatePage} />
                     <Route key="section" exact path="/section" component={SectionPage} />
                     <Route key="template" exact path="/template" component={Template} />
                     <Route key="login" path="/login" component={Login} />
+                    <Route
+                        key="select-template"
+                        exact
+                        path="/select-template"
+                        component={SelectTemplatePage}
+                    />
                 </Switch>
             </BrowserRouter>
         </StateProvider>

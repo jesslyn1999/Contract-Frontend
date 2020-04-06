@@ -14,7 +14,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
-import SectionSettingButton from './SectionSettingButton';
 import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -119,7 +118,7 @@ function EnhancedTableHead(props) {
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
-                            style={{ width: columnWidths[index] }}
+                            style={{ width: columnWidths ? columnWidths[index] : 'auto' }}
                         >
                             {headCell.label}
                         </TableSortLabel>
@@ -131,7 +130,7 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-    columnWidths: PropTypes.arrayOf(PropTypes.number).isRequired,
+    columnWidths: PropTypes.arrayOf(PropTypes.number),
     onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
@@ -218,6 +217,8 @@ export default function CustomTable(props) {
         setRowsPerPage,
         totalPages,
         handleSearch,
+        settingButton,
+        fromPersonalDb = true,
     } = props;
     const classes = useStyles();
     const [order, setOrder] = useState('asc');
@@ -238,7 +239,9 @@ export default function CustomTable(props) {
         setPage(0);
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
+    const emptyRows = totalPages
+        ? rowsPerPage - Math.min(rowsPerPage, rows.length)
+        : rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
@@ -256,7 +259,13 @@ export default function CustomTable(props) {
                         />
                         {!isLoading ? (
                             <TableBody>
-                                {stableSort(rows, getComparator(order, orderBy)).map(row => {
+                                {(totalPages
+                                    ? stableSort(rows, getComparator(order, orderBy))
+                                    : stableSort(rows, getComparator(order, orderBy)).slice(
+                                          page * rowsPerPage,
+                                          page * rowsPerPage + rowsPerPage,
+                                      )
+                                ).map(row => {
                                     return (
                                         <TableRow
                                             hover
@@ -272,7 +281,9 @@ export default function CustomTable(props) {
                                                             key={row[Object.keys(row)[0]] + index}
                                                             scope="row"
                                                             style={{
-                                                                width: columnWidths[index - 1],
+                                                                width: columnWidths
+                                                                    ? columnWidths[index - 1]
+                                                                    : 'auto',
                                                             }}
                                                         >
                                                             {row[k]}
@@ -282,7 +293,9 @@ export default function CustomTable(props) {
                                                             align="left"
                                                             key={row[Object.keys(row)[0]] + index}
                                                             style={{
-                                                                width: columnWidths[index - 1],
+                                                                width: columnWidths
+                                                                    ? columnWidths[index - 1]
+                                                                    : 'auto',
                                                             }}
                                                         >
                                                             {row[k]}
@@ -290,9 +303,13 @@ export default function CustomTable(props) {
                                                     )),
                                             )}
                                             <TableCell align="center">
-                                                <SectionSettingButton
-                                                    rowId={row[Object.keys(row)[0]]}
-                                                />
+                                                {fromPersonalDb
+                                                    ? settingButton({
+                                                          rowId: row[Object.keys(row)[0]],
+                                                      })
+                                                    : settingButton({
+                                                          candidateData: row,
+                                                      })}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -315,7 +332,7 @@ export default function CustomTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 50, 100]}
                     component="div"
-                    count={totalPages * rowsPerPage} // todo
+                    count={totalPages ? totalPages * rowsPerPage : rows.length} // todo
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -327,7 +344,7 @@ export default function CustomTable(props) {
 }
 
 CustomTable.propTypes = {
-    columnWidths: PropTypes.arrayOf(PropTypes.number).isRequired,
+    columnWidths: PropTypes.arrayOf(PropTypes.number),
     title: PropTypes.string.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
     rows: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first key of the object in array is Id
@@ -335,6 +352,7 @@ CustomTable.propTypes = {
     setPage: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
-    totalPages: PropTypes.number.isRequired,
+    totalPages: PropTypes.number,
     handleSearch: PropTypes.func.isRequired,
+    fromPersonalDb: PropTypes.bool,
 };
