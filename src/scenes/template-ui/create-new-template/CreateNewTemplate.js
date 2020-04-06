@@ -5,7 +5,6 @@ import CustomBuild from 'ckeditor5-itb-ppl';
 import apis from 'apis';
 import './CreateNewTemplate.scss';
 import 'react-progress-button/react-progress-button.css';
-import ProgressButton from 'react-progress-button';
 import LoadingButton from 'components/loading-button/LoadingButton';
 import SectionInsertor from 'components/section_inserter/SectionInserter';
 import {
@@ -29,9 +28,16 @@ const insertionCallbackCreator = editor => content => {
     // lastElement.scrollIntoView({ behavior: 'smooth' });
 };
 
-const CreateNewSection = () => {
+const CreateNewSection = (props) => {
+    const { data } = props;
     const [templateData, setTemplateData] = useState({ title: '', description: '', content: '' });
     const [myEditor, setMyEditor] = useState();
+
+    React.useEffect(() => {
+        if (data) {
+            setTemplateData(data);
+        }
+    }, [data]);
 
     return (
         <div className="new_template_container">
@@ -65,6 +71,7 @@ const CreateNewSection = () => {
                             setMyEditor(editor);
                             console.log('Editor is ready to use!', editor);
                             editor.editing.view.focus();
+                            editor.setData(templateData.content);
                         }}
                         onChange={(_, editor) => {
                             const data = editor.getData();
