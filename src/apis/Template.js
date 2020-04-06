@@ -18,7 +18,27 @@ const addNewTemplate = sectionData => {
     });
 };
 
-const getAllTemplates = (currPage, perPage = 6, find = null) => {
+const getAllTemplates = source => {
+    // source = axios.CancelToken.source();
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: process.env.REACT_APP_BACKEND_URL,
+            url: '/template/all',
+            withCredentials: true,
+            cancelToken: source.token,
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                if (axios.isCancel(err)) console.log('cancel request');
+                else reject(err);
+            });
+    });
+};
+
+const getTemplates = (currPage, perPage = 6, find = null) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
@@ -30,13 +50,12 @@ const getAllTemplates = (currPage, perPage = 6, find = null) => {
                 find: find,
             },
         })
-            .then(({data}) => {
+            .then(({ data }) => {
                 resolve(data);
-            }) 
+            })
             .catch(err => {
                 reject(err);
             });
-
     });
 };
 
@@ -77,4 +96,5 @@ const deleteTemplateById = id => {
     });
 };
 
-export { addNewTemplate, getAllTemplates, getTemplateById, deleteTemplateById };
+
+export { addNewTemplate, getAllTemplates, getTemplates, getTemplateById, deleteTemplateById };

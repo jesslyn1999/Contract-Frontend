@@ -4,13 +4,14 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { SectionButtonStyle } from './SectionInsertButtonStyle';
 
 const PlainSectionButton = ({ sectionData = {}, className, insertionCallback }) => {
-    const { title, description, content } = sectionData;
+    const { _id, title, description, content } = sectionData;
 
     return (
         <div
             className={className}
             onClick={() => {
-                insertionCallback(content);
+                if (_id) insertionCallback(content, _id);
+                else insertionCallback(content);
             }}
         >
             <div className="column_divider">
