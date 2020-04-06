@@ -22,7 +22,7 @@ import InputBase from '@material-ui/core/InputBase';
 
 const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
-    const { title, handleSearch } = props;
+    const { title, handleSearch, fromPersonalDb } = props;
     const [query, setQuery] = useState('');
 
     return (
@@ -30,38 +30,46 @@ const EnhancedTableToolbar = props => {
             <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
                 {title}
             </Typography>
-            <div className={classes.searchBar}>
-                <Paper component="form" className={classes.search} onSubmit={handleSearch(query)}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
+            {fromPersonalDb && (
+                <React.Fragment>
+                    <div className={classes.searchBar}>
+                        <Paper
+                            component="form"
+                            className={classes.search}
+                            onSubmit={handleSearch(query)}
+                        >
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                fullWidth
+                                placeholder="Search ..."
+                                value={query}
+                                onChange={event => setQuery(event.target.value)}
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Paper>
                     </div>
-                    <InputBase
-                        fullWidth
-                        placeholder="Search ..."
-                        value={query}
-                        onChange={event => setQuery(event.target.value)}
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
+                    <CreateNewSection
+                        triggerContent={() => (
+                            <Tooltip
+                                title="Add Section"
+                                className={classes.plusIcon}
+                                enterDelay={500}
+                                leaveDelay={100}
+                            >
+                                <IconButton href="" aria-label="Add Section">
+                                    <AddIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     />
-                </Paper>
-            </div>
-            <CreateNewSection
-                triggerContent={() => (
-                    <Tooltip
-                        title="Add Section"
-                        className={classes.plusIcon}
-                        enterDelay={500}
-                        leaveDelay={100}
-                    >
-                        <IconButton href="" aria-label="Add Section">
-                            <AddIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
-            />
+                </React.Fragment>
+            )}
         </Toolbar>
     );
 };
@@ -246,7 +254,11 @@ export default function CustomTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar title={title} handleSearch={handleSearch} />
+                <EnhancedTableToolbar
+                    title={title}
+                    handleSearch={handleSearch}
+                    fromPersonalDb={fromPersonalDb}
+                />
                 <TableContainer>
                     <Table aria-labelledby="tableTitle" size="small" aria-label="enhanced table">
                         <EnhancedTableHead
