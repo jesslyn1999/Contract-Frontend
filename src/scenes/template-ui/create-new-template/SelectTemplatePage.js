@@ -8,7 +8,7 @@ import {
 import Button from '@material-ui/core/Button';
 import SectionInsertor from 'components/section_inserter/SectionInserter';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import CustomBuild from 'ckeditor5-itb-ppl';
+import CKEditorsBuild from 'ckeditor5-super-build-ppl';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import '../Template.scss';
@@ -73,7 +73,7 @@ const SelectTemplatePage = props => {
                             config={{
                                 height: '100%',
                             }}
-                            editor={CustomBuild}
+                            editor={CKEditorsBuild.ClassicEditor}
                             data={templateData.content}
                             onInit={editor => {
                                 editor.isReadOnly = true;

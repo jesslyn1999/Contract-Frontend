@@ -11,13 +11,17 @@ const Template = () => {
     const [pageState, setPageState] = React.useState(0);
     const [objData, setObjData] = React.useState();
 
-    const modifyObjData = (data) => {
+    const modifyObjData = data => {
         setObjData(data);
-        changePageState();
+
+        changePageState(false);
     };
 
-    const changePageState = () => {
-        if ( pageState === 0) {
+    const changePageState = is_create_new => {
+        if (is_create_new) {
+            setObjData();
+        }
+        if (pageState === 0) {
             setPageState(1);
         } else {
             setPageState(0);
@@ -25,12 +29,9 @@ const Template = () => {
     };
 
     if (pageState === 0) {
-        return <TemplateLanding setPage={ changePageState } dataHandle={ modifyObjData } />
+        return <TemplateLanding setPage={changePageState} dataHandle={modifyObjData} />;
     } else {
-        if (objData) {
-            return <CreateNewTemplate data={objData} getContents={getAllSections} />;
-        }
-        return <CreateNewTemplate getContents={getAllSections}/>;
+        return <CreateNewTemplate data={objData} setPage={changePageState} />;
     }
 };
 

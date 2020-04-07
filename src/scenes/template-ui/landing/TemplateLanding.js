@@ -131,7 +131,7 @@ function TemplateLanding(props) {
     };
 
     React.useEffect(() => {
-        setQuery((parse(props.location.search, { ignoreQueryPrefix: true }))['find']);
+        setQuery(parse(props.location.search, { ignoreQueryPrefix: true })['find']);
     }, [props.location]);
 
     return (

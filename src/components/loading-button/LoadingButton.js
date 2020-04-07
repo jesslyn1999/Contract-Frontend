@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
-import { Loader, StyledBareButton, CheckBox } from './LoadingButtonStyle';
-import color from '@material-ui/core/colors/amber';
+import { Loader, StyledBareButton } from './LoadingButtonStyle';
 
 const NiceButton = ({ onClick, children, ...props }) => {
     /* Capture the dimensions of the button before the loading happens
@@ -24,7 +23,6 @@ const NiceButton = ({ onClick, children, ...props }) => {
             if (ref.current && ref.current.getBoundingClientRect().height) {
                 setHeight(ref.current.getBoundingClientRect().height);
             }
-            // console.log(children);
         },
         // children are a dep so dimensions are updated if initial contents change
         [children],
@@ -40,7 +38,7 @@ const NiceButton = ({ onClick, children, ...props }) => {
         if (!isLoading && showLoader) {
             let processingTime = new Date() - startLoadingTime;
 
-            const timeout = setTimeout(() => {
+            setTimeout(() => {
                 // ilangin show loader
                 setShowLoader(false);
 
@@ -48,11 +46,6 @@ const NiceButton = ({ onClick, children, ...props }) => {
                     setProcessResult(null);
                 }, 1000);
             }, Math.max(0, 800 - processingTime));
-
-            // Don’t forget to clear the timeout
-            // return () => {
-            //     clearTimeout(timeout);
-            // };
         }
     }, [isLoading, showLoader]);
 
