@@ -25,10 +25,9 @@ export const App = () => {
                             </div>
                         )}
                     />
-                    <Route key="admin" exact path="/admin" render={AdminPage} />
-                    <Route key="candidate" exact path="/candidate" component={CandidatePage} />
-                    <Route key="section" exact path="/section" component={SectionPage} />
-                    <Route key="template" exact path="/template" component={Template} />
+                    <Route key="admin" path="/admin" render={AdminPage} />
+                    <Route key="section" path="/section" component={SectionPage} />
+                    <Route key="template" path="/template" component={Template} />
                     <Route key="login" path="/login" component={Login} />
                     <Route
                         key="select-template"

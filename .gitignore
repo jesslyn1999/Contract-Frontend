@@ -30,3 +30,4 @@ ckeditor5-custom-build
 # vscode
 .vscode
 /.vscode/*
+ck5editor-document

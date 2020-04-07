@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const Loader = styled.div`
@@ -20,6 +19,7 @@ export const Loader = styled.div`
 `;
 
 export const StyledBareButton = styled.button`
+    cursor: pointer;
     border: none;
     padding: 1rem 2rem;
     font-size: 16px;
