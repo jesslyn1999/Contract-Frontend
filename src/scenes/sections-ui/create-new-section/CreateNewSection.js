@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import CustomBuild from 'ckeditor5-itb-ppl';
-// import CustomBuild from 'ckeditor5-custom-build2';
+import CKEditorsBuild from 'ckeditor5-super-build-ppl';
 import Popup from 'reactjs-popup';
 import apis from 'apis';
 import './CreateNewSection.scss';
@@ -75,7 +74,7 @@ const CreateNewSection = props => {
                     <div className="ck_editor_container">
                         <CKEditor
                             config={{ height: '100%' }}
-                            editor={CustomBuild}
+                            editor={CKEditorsBuild.ClassicEditor}
                             data={sectionData.content}
                             onInit={editor => {
                                 // You can store the "editor" and use when it is needed.

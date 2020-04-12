@@ -7,13 +7,13 @@ export const TemplateCreatorHeader = styled.div`
     justify-content: center;
     font-size: 25px;
     font-weight: 600;
-    margin: 0 2em 0 0;
 `;
 
 export const TemplateNameInput = styled.input`
     border: none;
     border-bottom: 1px solid #8c8c8c;
     font-size: 25px;
+    margin: 0 0 0 2em;
 `;
 
 export const TemplateHeaderContainer = styled.div`
@@ -22,8 +22,9 @@ export const TemplateHeaderContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     align-content: flex-end;
-    & > button:last-child {
+    & > button:nth-last-child(2) {
         margin-left: auto;
+        margin-right: 1em;
     }
 `;
 

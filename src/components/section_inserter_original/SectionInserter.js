@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { getAllSections } from 'apis/Section';
 import { SectionInserterContainer, Header, SectionButtonContainer } from './SectionInserterStyle';
 import { SectionButton } from './SectionInsertButton/SectionInsertButton';
-import PropTypes from 'prop-types';
-import axios from "axios";
 
 const SectionListCreator = (sections, insertionCallback) =>
     sections.map((section, idx) => (
@@ -10,31 +9,20 @@ const SectionListCreator = (sections, insertionCallback) =>
     ));
 
 const SectionInsertor = props => {
-    const { header, insertionCallback, getContents } = props;
     const [sectionListContent, setSectionListContent] = useState();
 
     useEffect(() => {
-        let source = axios.CancelToken.source();
-        getContents(source).then(res => {
-            setSectionListContent(SectionListCreator(res, insertionCallback));
+        getAllSections().then(res => {
+            setSectionListContent(SectionListCreator(res, props.insertionCallback));
         });
-        return () => {
-            source.cancel();
-        };
-    }, [getContents, insertionCallback]);
+    }, [props.insertionCallback]);
 
     return (
         <SectionInserterContainer>
-            <Header>{header}</Header>
+            <Header>Sections</Header>
             <SectionButtonContainer>{sectionListContent}</SectionButtonContainer>
         </SectionInserterContainer>
     );
 };
-
-SectionInsertor.propTypes = {
-    getContents: PropTypes.func.isRequired,
-    header: PropTypes.string.isRequired,
-};
-
 
 export default SectionInsertor;
