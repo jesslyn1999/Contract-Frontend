@@ -18,4 +18,26 @@ const getAllCandidates = (keyword = '') => {
     });
 };
 
-export { getAllCandidates };
+const getAllKeys = (baseURL, url, keyword = '') => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: baseURL,
+            url: url,
+            withCredentials: true,
+            params: {
+                keyword: keyword,
+            },
+        })
+            .then(({ data }) => {
+                var keys = []
+                for (var k in data.data[0]) {
+                    keys.push(k);
+                }
+                resolve(keys);
+            })
+            .catch(reject);
+    });
+};
+
+export { getAllCandidates, getAllKeys };
