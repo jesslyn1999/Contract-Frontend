@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import { getAllKeys } from 'apis/Candidate';
 
 const drawerWidth = 320;
 
@@ -51,23 +52,7 @@ const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
 }));
 
-const tables = ['SPPBJ'];
-const tableColumn = [
-    'NO_SPPBJ',
-    'TGL_SPPBJ',
-    'NAMA_PAKET',
-    'NAMA_PENYEDIA',
-    'ALAMAT',
-    'NO_PENAWARAN',
-    'TGL_PENAWARAN',
-    'NO_BAK',
-    'TGL_BAK',
-    'NILAI_NEGOSIASI',
-    'SUMBER_DANA',
-    'TAHUN',
-    'NAMA_TTD',
-    'NO_IDENTITAS',
-];
+const tables = ['PEMENANG', 'SPPBJ', 'JAMLAK'];
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -91,6 +76,50 @@ export default function TagPanelRight() {
     const [value, setValue] = React.useState('set');
     const [tableName, setTableName] = React.useState(tables[0]);
     const [open, setOpen] = React.useState(false);
+    const [tableColumn, setTableColumn] = React.useState([]);
+
+    useEffect(() => {
+        if (tableName === 'JAMLAK') {
+            var columns = [
+                'NO_JAMLAK',
+                'TGL_PEMBUATAN',
+                'TGL_JATUH_TEMPO',
+                'NAMA_BANK',
+                'ALAMAT_BANK',
+                'NOMINAL_GARANSI',
+                'NO_SPPBJ',
+            ];
+            setTableColumn(columns);
+        } else if (tableName === 'PEMENANG') {
+            const fetchKeys = async () => {
+                getAllKeys(
+                    'http://api.logistik.itb.ac.id',
+                    '/ta_sppemenang/2019?token=8ef83647567cdfgb4K776509242ce0b9',
+                )
+                    .then(res => {
+                        setTableColumn(res);
+                    })
+                    .catch(err => {
+                        console.log('Error fetching keys.\n', err);
+                    });
+            };
+            fetchKeys();
+        } else if (tableName === 'SPPBJ') {
+            const fetchKeys = async () => {
+                getAllKeys(
+                    'http://api.logistik.itb.ac.id',
+                    'ta_sppbj?token=8ef83647567cdfgb4K776509242ce0b9',
+                )
+                    .then(res => {
+                        setTableColumn(res);
+                    })
+                    .catch(err => {
+                        console.log('Error fetching keys.\n', err);
+                    });
+            };
+            fetchKeys();
+        }
+    }, [tableName]);
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
@@ -172,7 +201,7 @@ export default function TagPanelRight() {
                                 </Paper>
                             </Grid>
 
-                            <Grid key={value} item xs={7}>
+                            <Grid key={`${value}:${text}`} item xs={7}>
                                 <ListItem
                                     className={classes.listitem}
                                     onClick={handleListClicked.bind(this, `<<set:${text}>>`)}
@@ -222,7 +251,7 @@ export default function TagPanelRight() {
                 <List>
                     {tableColumn.map((text, index) => (
                         <Grid container className={classes.grid} justify="center" spacing={0}>
-                            <Grid key={value} item xs={5}>
+                            <Grid key={`${value}:${text}`} item xs={5}>
                                 <Paper variant="outlined" className={classes.paper}>
                                     <Box
                                         component="div"
