@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const addNewSection = sectionData => {
+const addNewTemplate = sectionData => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/',
+            url: '/template/',
             withCredentials: true,
             data: sectionData,
         })
@@ -18,34 +18,32 @@ const addNewSection = sectionData => {
     });
 };
 
-const getAllSections = (source, keyword = '') => {
+const getAllTemplates = source => {
+    // source = axios.CancelToken.source();
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/all',
+            url: '/template/all',
             withCredentials: true,
-            params: {
-                keyword: keyword,
-            },
-            cancelToken: source? source.token : null,
+            cancelToken: source.token,
         })
             .then(({ data }) => {
                 resolve(data);
             })
             .catch(err => {
-                if( axios.isCancel(err)) console.log("cancel request");
+                if (axios.isCancel(err)) console.log('cancel request');
                 else reject(err);
             });
     });
 };
 
-const getSections = (currPage, perPage, find = null) => {
+const getTemplates = (currPage, perPage = 6, find = null) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/' + currPage,
+            url: '/template/' + currPage,
             withCredentials: true,
             params: {
                 perpage: perPage,
@@ -61,20 +59,18 @@ const getSections = (currPage, perPage, find = null) => {
     });
 };
 
-const getSectionById = id => {
-    console.log('getsectionbyid is called with id=', id);
+const getTemplateById = id => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section',
+            url: '/template',
             withCredentials: true,
             params: {
                 id: id,
             },
         })
             .then(({ data }) => {
-                console.log(data);
                 resolve(data);
             })
             .catch(err => {
@@ -83,12 +79,12 @@ const getSectionById = id => {
     });
 };
 
-const deleteSectionById = id => {
+const deleteTemplateById = id => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'delete',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/' + id,
+            url: '/template/' + id,
             withCredentials: true,
         })
             .then(({ data }) => {
@@ -100,4 +96,5 @@ const deleteSectionById = id => {
     });
 };
 
-export { addNewSection, getSections, deleteSectionById, getAllSections, getSectionById };
+
+export { addNewTemplate, getAllTemplates, getTemplates, getTemplateById, deleteTemplateById };

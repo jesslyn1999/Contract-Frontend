@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import CustomBuild from 'ckeditor5-itb-ppl';
+import CKEditorsBuild from 'ckeditor5-super-build-ppl';
 import Popup from 'reactjs-popup';
 import apis from 'apis';
 import './CreateNewSection.scss';
@@ -28,10 +28,12 @@ const saveFunction = (sectionData, close) =>
 
 const CreateNewSection = props => {
     const { triggerContent, data } = props;
-    const [sectionData, setSectionData] = useState(data);
+    const [sectionData, setSectionData] = useState({ title: '', description: '', content: '' });
 
     useEffect(() => {
-        setSectionData(data);
+        if (data) {
+            setSectionData(data);
+        }
     }, [data]);
 
     return (
@@ -72,7 +74,7 @@ const CreateNewSection = props => {
                     <div className="ck_editor_container">
                         <CKEditor
                             config={{ height: '100%' }}
-                            editor={CustomBuild}
+                            editor={CKEditorsBuild.ClassicEditor}
                             data={sectionData.content}
                             onInit={editor => {
                                 // You can store the "editor" and use when it is needed.
@@ -100,15 +102,7 @@ const CreateNewSection = props => {
                         >
                             Submit
                         </ProgressButton>
-                        <ProgressButton
-                            onClick={() =>
-                                new Promise((resolve, reject) => {
-                                    resolve();
-                                    close();
-                                })
-                            }
-                            className="prompt_button"
-                        >
+                        <ProgressButton onClick={close} className="prompt_button">
                             Cancel
                         </ProgressButton>
                     </div>
@@ -118,9 +112,8 @@ const CreateNewSection = props => {
     );
 };
 
-
 CreateNewSection.propTypes = {
-    triggerContent: PropTypes.func.isRequired
+    triggerContent: PropTypes.func.isRequired,
 };
 
 export default CreateNewSection;

@@ -3,10 +3,11 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { withRouter, useHistory } from 'react-router-dom';
 import CustomTable from 'components/material-ui/CustomTable';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
-import { getSections } from 'apis/Section';
+import apis from 'apis';
 import { parse, stringify } from 'qs';
 import useTheme from '@material-ui/core/styles/useTheme';
 import themePage from 'scenes/theme';
+import SectionSettingButton from 'scenes/sections-ui/setting-button/SectionSettingButton';
 
 function SectionPage(props) {
     const theme = useTheme();
@@ -45,7 +46,8 @@ function SectionPage(props) {
     useEffect(() => {
         const fetchSections = async (currPage, perPage, find) => {
             setIsLoading(true);
-            getSections(currPage + 1, perPage, find)
+            apis.section
+                .getSections(currPage + 1, perPage, find)
                 .then(res => {
                     const { data, pages } = res;
                     let data_temp = data.map(item => ({
@@ -81,6 +83,7 @@ function SectionPage(props) {
                 setRowsPerPage={setRowsPerPage}
                 totalPages={totalPages}
                 handleSearch={handleSearch}
+                settingButton={props => <SectionSettingButton {...props} />}
             />
         </ThemeProvider>
     );

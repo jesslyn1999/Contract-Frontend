@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CustomSideBarLeft(props) {
     const classes = useStyles();
-    const { openDrawer, setOpenDrawer } = props;
+    const { openDrawer, setOpenDrawer, sideBarTexts, sideBarLinks } = props;
 
     const toggleDrawer = open => event => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -63,8 +63,8 @@ export default function CustomSideBarLeft(props) {
                     <ListItemText primary="Direktorat Logistik" className={classes.headerText} />
                 </ListItem>
                 <Divider />
-                {['Home', 'Document'].map((text, index) => (
-                    <ListItem button key={text} className={classes.listItem}>
+                {sideBarTexts.map((text, index) => (
+                    <ListItem button component="a" key={text} className={classes.listItem} href={sideBarLinks[index]} >
                         <ListItemText primary={text} />
                     </ListItem>
                 ))}
@@ -86,4 +86,6 @@ export default function CustomSideBarLeft(props) {
 CustomSideBarLeft.propTypes = {
     openDrawer: PropTypes.bool.isRequired,
     setOpenDrawer: PropTypes.func.isRequired,
+    sideBarTexts: PropTypes.arrayOf(PropTypes.string).isRequired,
+    sideBarLinks: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
