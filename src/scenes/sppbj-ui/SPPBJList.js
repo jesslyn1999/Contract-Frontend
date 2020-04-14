@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import CustomTable from 'components/material-ui/CustomTable';
+import CustomTableSPPBJ from 'components/material-ui/CustomTableSPPBJ';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import { parse, stringify } from 'qs';
 import apis from 'apis';
 import themePage from 'scenes/theme';
 import useTheme from '@material-ui/core/styles/useTheme';
+
 
 function SPPBJList(props) {
     const theme = useTheme();
@@ -81,7 +82,7 @@ function SPPBJList(props) {
     return (
         <ThemeProvider theme={themePage}>
             <CustomNavbar />
-            <CustomTable
+            <CustomTableSPPBJ
                 columnWidths={columnWidths}
                 title={title}
                 isLoading={isLoading}
