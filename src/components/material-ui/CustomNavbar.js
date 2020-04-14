@@ -9,8 +9,8 @@ import CustomSideBarLeft from 'components/material-ui/CustomSideBarLeft';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DoneIcon from '@material-ui/icons/Done';
-import useTheme from "@material-ui/core/styles/useTheme";
-import { Box } from "@material-ui/core";
+import useTheme from '@material-ui/core/styles/useTheme';
+import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -25,10 +25,10 @@ const useStyles = makeStyles(theme => ({
         width: theme.spacing(126),
     },
     profileName: {
-        margin: theme.spacing(0,2),
+        margin: theme.spacing(0, 2),
         marginTop: 'auto',
         marginBottom: 'auto',
-    }
+    },
 }));
 
 export default function CustomNavbar(props) {
@@ -47,22 +47,43 @@ export default function CustomNavbar(props) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <div style={{flex: 1}}/>
+                <div style={{ flex: 1 }} />
                 <Box display="flex">
-                    <Avatar alt="Jesslyn"/>
-                    <Typography variant="subtitle1" component="div" align="center" className={classes.profileName}>
+                    <Avatar alt="Jesslyn" />
+                    <Typography
+                        variant="subtitle1"
+                        component="div"
+                        align="center"
+                        className={classes.profileName}
+                    >
                         Admin
                     </Typography>
-                    <IconButton href="" style={{color: theme.palette.primary.contrastText}}>
-                        <ExpandMoreIcon/>
+                    <IconButton href="" style={{ color: theme.palette.primary.contrastText }}>
+                        <ExpandMoreIcon />
                     </IconButton>
                 </Box>
             </Toolbar>
-            <CustomSideBarLeft 
-                openDrawer={openDrawerLeft} 
-                setOpenDrawer={setOpenDrawerLeft} 
-                sideBarTexts={['Home', 'Templates', 'Sections']}
-                sideBarLinks={['/home', '/template', '/section']}
+            <CustomSideBarLeft
+                openDrawer={openDrawerLeft}
+                setOpenDrawer={setOpenDrawerLeft}
+                sideBarTexts={[
+                    'Home',
+                    'Sections',
+                    'Templates',
+                    'Document',
+                    'Candidates',
+                    'SPPBJ Document Generator',
+                    'Jamlak Document Generator',
+                ]}
+                sideBarLinks={[
+                    '/home',
+                    '/section',
+                    '/template',
+                    '/document',
+                    '/candidate',
+                    '/create-spbbj',
+                    '/create-jamlak',
+                ]}
             />
         </AppBar>
     );

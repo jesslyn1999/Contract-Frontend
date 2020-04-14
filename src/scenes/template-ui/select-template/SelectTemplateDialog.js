@@ -12,18 +12,25 @@ import CKEditorsBuild from 'ckeditor5-super-build-ppl';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import '../Template.scss';
-import themePage from 'scenes/theme';
-import { ThemeProvider } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import { makeStyles } from '@material-ui/core/styles';
 
-const SelectTemplatePage = props => {
-    const { candidateData } = props.location;
+const SelectTemplateDialog = props => {
+    const classes = useStyles();
+    const { open, setOpen, actionCallback } = props;
     const [templateData, setTemplateData] = useState({ title: '', description: '', content: '' });
     const [myEditor, setMyEditor] = useState('');
-    const [idSelected, setIdSelected] = useState('');
 
-    const insertionCallbackCreator = editor => (content, _id = '') => {
+    const insertionCallbackCreator = editor => (content, data = {}) => {
         editor.setData('');
-        setIdSelected(_id);
+        setTemplateData(data);
         const htmlDP = editor.data.processor;
         const viewFragment = htmlDP.toView(content + '<p>&nbsp;</p>');
         const modelFragment = editor.data.toModel(viewFragment);
@@ -35,15 +42,29 @@ const SelectTemplatePage = props => {
         editor.editing.view.focus();
     };
 
-    const noCandidateDataEvent = () => {
-        alert('Pilih setidaknya satu pemenang');
-        return <Redirect to="/candidate" />;
-    };
-
     return (
-        <ThemeProvider theme={themePage}>
+        <Dialog
+            fullScreen
+            open={open}
+            onClose={() => setOpen(false)}
+            TransitionComponent={Transition}
+        >
+            <AppBar className={classes.appBar}>
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={() => setOpen(false)}
+                        aria-label="close"
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        Template Data
+                    </Typography>
+                </Toolbar>
+            </AppBar>
             <div className="new_template_container">
-                {!candidateData && noCandidateDataEvent()}
                 <TemplateHeaderContainer>
                     <TemplateCreatorHeader>Template Selector</TemplateCreatorHeader>
                     <Button
@@ -51,8 +72,13 @@ const SelectTemplatePage = props => {
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            if (idSelected) console.log('HMM');
-                            else alert('Harus memilih template!');
+                            if (templateData._id) {
+                                actionCallback({
+                                    id: templateData._id,
+                                    title: templateData.title,
+                                    description: templateData.description,
+                                });
+                            } else alert('Harus memilih template!');
                         }}
                     >
                         Next&ensp;
@@ -88,8 +114,28 @@ const SelectTemplatePage = props => {
                     </div>
                 </div>
             </div>
-        </ThemeProvider>
+        </Dialog>
     );
 };
 
-export default withRouter(SelectTemplatePage);
+const useStyles = makeStyles(theme => ({
+    appBar: {
+        position: 'relative',
+    },
+    title: {
+        marginLeft: theme.spacing(2),
+        flex: 1,
+    },
+}));
+
+SelectTemplateDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    actionCallback: PropTypes.func.isRequired,
+};
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+export default withRouter(SelectTemplateDialog);
