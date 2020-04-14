@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { withRouter, useHistory } from 'react-router-dom';
-import CustomTable from 'components/material-ui/CustomTable';
+import CustomTableJamlak from 'components/material-ui/CustomTableJamlak';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import apis from 'apis';
 import { parse, stringify } from 'qs';
@@ -74,7 +74,7 @@ function JamlakPage(props) {
     return (
         <ThemeProvider theme={themePage}>
             <CustomNavbar />
-            <CustomTable
+            <CustomTableJamlak
                 columnWidths={columnWidths}
                 title={title}
                 isLoading={isLoading}
