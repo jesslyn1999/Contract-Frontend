@@ -5,7 +5,7 @@ const getAllSPPBJs = (source, keyword = '') => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/sppbj/all',
+            url: '/get_all_sppbj',
             withCredentials: true,
             params: {
                 keyword: keyword,
@@ -27,7 +27,7 @@ const getSPPBJs = (currPage, perPage, find = null) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/sppbj/' + currPage,
+            url: '/get_sppbj/' + currPage,
             withCredentials: true,
             params: {
                 perpage: perPage,

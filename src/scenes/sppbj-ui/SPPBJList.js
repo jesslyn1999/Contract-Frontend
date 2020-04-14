@@ -21,17 +21,23 @@ function SPPBJList(props) {
     const title = 'List of SPPBJ';
 
     const headCells = [
-        { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
+        { id: 'no_lampiran', numeric: false, disablePadding: false, label: 'No' },
         {
-            id: 'description',
+            id: 'tanggal_terbit',
             numeric: false,
             disablePadding: false,
-            label: 'Description',
+            label: 'Tanggal Terbit',
+        },
+        {
+            id: 'nama_pemenang',
+            numeric: false,
+            disablePadding: false,
+            label: 'Nama Pemenang',
         },
         { id: 'setting', numeric: false, disablePadding: false, label: '' },
     ];
 
-    const columnWidths = [theme.spacing(15), theme.spacing(15), theme.spacing(65)];
+    const columnWidths = [theme.spacing(15), theme.spacing(15), theme.spacing(35)];
 
     const handleSearch = find => event => {
         event.preventDefault();
@@ -48,10 +54,10 @@ function SPPBJList(props) {
     }, [props.location]);
 
     useEffect(() => {
-        const fetchSections = async (currPage, perPage, find) => {
+        const fetchSPPBJs = async (currPage, perPage, find) => {
             setIsLoading(true);
             apis.sppbj
-                .getSections(currPage + 1, perPage, find)
+                .getSPPBJs(currPage + 1, perPage, find)
                 .then(res => {
                     const { data, pages } = res;
                     let data_temp = data.map(item => ({
@@ -69,12 +75,12 @@ function SPPBJList(props) {
                     setIsLoading(false);
                 });
         };
-        fetchSections(page, rowsPerPage, query['find']);
+        fetchSPPBJs(page, rowsPerPage, query['find']);
     }, [page, rowsPerPage, query]);
 
     return (
         <ThemeProvider theme={themePage}>
-            <CustomNavbar handleSearch={()=>{}} />
+            <CustomNavbar />
             <CustomTable
                 columnWidths={columnWidths}
                 title={title}
@@ -86,6 +92,7 @@ function SPPBJList(props) {
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
                 totalPages={totalPages}
+                handleSearch={handleSearch}
             />
         </ThemeProvider>
     );
