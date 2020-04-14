@@ -6,6 +6,7 @@ import apis from 'apis';
 import './CreateNewSection.scss';
 import 'react-progress-button/react-progress-button.css';
 import ProgressButton from 'react-progress-button';
+import CustomDrawer from 'components/material-ui/CustomDrawer';
 import PropTypes from 'prop-types';
 
 const saveFunction = (sectionData, close) =>
@@ -45,6 +46,7 @@ const CreateNewSection = props => {
         >
             {close => (
                 <div className="new_section_container">
+                    <CustomDrawer />
                     <div className="modal_title">Buat Section Baru</div>
                     <div className="input_judul_container">
                         <div className="input_judul_label">Judul:</div>
