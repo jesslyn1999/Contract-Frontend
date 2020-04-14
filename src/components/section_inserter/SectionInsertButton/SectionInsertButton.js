@@ -10,7 +10,7 @@ const PlainSectionButton = ({ sectionData = {}, className, insertionCallback }) 
         <div
             className={className}
             onClick={() => {
-                if (_id) insertionCallback(content, _id);
+                if (_id) insertionCallback(content, sectionData);
                 else insertionCallback(content);
             }}
         >

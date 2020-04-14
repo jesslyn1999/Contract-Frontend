@@ -6,7 +6,10 @@ import AdminPage from 'scenes/administration-ui/AdminPage';
 import CandidatePage from 'scenes/candidates-ui/CandidatePage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
 import Template from 'scenes/template-ui/Template';
-import SelectTemplatePage from 'scenes/template-ui/create-new-template/SelectTemplatePage';
+import DocumentCreatorSpbbjPage from 'scenes/document-ui/DocumentCreatorSpbbjPage';
+import DocumentCreatorJamlakPage from 'scenes/document-ui/DocumentCreatorJamlakjPage';
+import JamlakForm from 'scenes/jamlak-ui/JamlakForm';
+import SpbbjPage from 'scenes/spbbj/SpbbjPage';
 
 import Login from '../components/login.component';
 
@@ -29,13 +32,20 @@ export const App = () => {
                     <Route key="section" path="/section" component={SectionPage} />
                     <Route key="template" path="/template" component={Template} />
                     <Route key="login" path="/login" component={Login} />
+                    <Route key="candidate" path="/candidate" component={CandidatePage} />
                     <Route
-                        key="select-template"
-                        exact
-                        path="/select-template"
-                        component={SelectTemplatePage}
+                        key="create-spbbj"
+                        path="/create-spbbj"
+                        component={DocumentCreatorSpbbjPage}
                     />
-                </Switch>
+                    <Route
+                        key="create-jamlak"
+                        path="/create-jamlak"
+                        component={DocumentCreatorJamlakPage}
+                    />
+                    <Route key="jamlak-form" path="/jamlak-form" component={JamlakForm} />
+                    <Route key="document" path="/document" component={SpbbjPage} />
+            </Switch>
             </BrowserRouter>
         </StateProvider>
     );

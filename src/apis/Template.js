@@ -96,5 +96,25 @@ const deleteTemplateById = id => {
     });
 };
 
+const getTemplateFormField = id => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            baseURL: process.env.REACT_APP_BACKEND_URL,
+            url: '/template',
+            withCredentials: true,
+            params: {
+                id: id,
+            },
+        })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+};
 
-export { addNewTemplate, getAllTemplates, getTemplates, getTemplateById, deleteTemplateById };
+
+export { addNewTemplate, getAllTemplates, getTemplates, getTemplateById, deleteTemplateById, getTemplateFormField };

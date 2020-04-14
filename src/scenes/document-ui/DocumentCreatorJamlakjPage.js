@@ -1,17 +1,17 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
 import CustomNavbar from 'components/material-ui/CustomNavbar';
 import themePage from 'scenes/theme';
-import CandidateTable from 'scenes/candidates-ui/table/CandidateTable';
+import DocumentCreatorJamlakPanel from 'scenes/document-ui/panel/DocumentCreatorJamlakPanel';
 
-function CandidatePage() {
+function DocumentCreatorJamlakPage(props) {
+    // const { candidateData, templateData } = props.location;
     return (
         <ThemeProvider theme={themePage}>
             <CustomNavbar />
-            <CandidateTable />
+            <DocumentCreatorJamlakPanel/>
         </ThemeProvider>
     );
 }
 
-export default withRouter(CandidatePage);
+export default DocumentCreatorJamlakPage;
