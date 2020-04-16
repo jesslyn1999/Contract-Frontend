@@ -10,6 +10,7 @@ import DocumentCreatorSpbbjPage from 'scenes/document-ui/DocumentCreatorSpbbjPag
 import DocumentCreatorJamlakPage from 'scenes/document-ui/DocumentCreatorJamlakjPage';
 import JamlakForm from 'scenes/jamlak-ui/JamlakForm';
 import SpbbjPage from 'scenes/spbbj/SpbbjPage';
+import kontrakPage from 'scenes/kontrak/KontrakPage';
 
 import Login from '../components/login.component';
 
@@ -45,6 +46,7 @@ export const App = () => {
                     />
                     <Route key="jamlak-form" path="/jamlak-form" component={JamlakForm} />
                     <Route key="sppbj" path="/sppbj" component={SpbbjPage} />
+                    <Route key="kontrak" path="/kontrak" component={kontrakPage} />
             </Switch>
             </BrowserRouter>
         </StateProvider>
