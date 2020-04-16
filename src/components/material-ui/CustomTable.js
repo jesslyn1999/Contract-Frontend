@@ -22,7 +22,7 @@ import InputBase from '@material-ui/core/InputBase';
 
 const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
-    const { title, handleSearch, fromPersonalDb } = props;
+    const { title, handleSearch, fromPersonalDb, noToolbar } = props;
     const [query, setQuery] = useState('');
 
     return (
@@ -30,7 +30,7 @@ const EnhancedTableToolbar = props => {
             <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
                 {title}
             </Typography>
-            {fromPersonalDb && (
+            {fromPersonalDb && !noToolbar && (
                 <React.Fragment>
                     <div className={classes.searchBar}>
                         <Paper
@@ -75,8 +75,10 @@ const EnhancedTableToolbar = props => {
 };
 
 EnhancedTableToolbar.propTypes = {
+    noToolbar: PropTypes.bool,
+    fromPersonalDb: PropTypes.bool,
     title: PropTypes.string.isRequired,
-    handleSearch: PropTypes.func.isRequired,
+    handleSearch: PropTypes.func,
 };
 
 function descendingComparator(a, b, orderBy) {
@@ -214,6 +216,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CustomTable(props) {
     const {
+        noToolbar,
         columnWidths,
         title,
         isLoading,
@@ -256,6 +259,7 @@ export default function CustomTable(props) {
             <Paper className={classes.paper}>
                 <EnhancedTableToolbar
                     title={title}
+                    noToolbar={noToolbar}
                     handleSearch={handleSearch}
                     fromPersonalDb={fromPersonalDb}
                 />
@@ -318,6 +322,7 @@ export default function CustomTable(props) {
                                                 {fromPersonalDb
                                                     ? settingButton({
                                                           rowId: row[Object.keys(row)[0]],
+                                                          rowData: row,
                                                       })
                                                     : settingButton({
                                                           candidateData: row,
@@ -344,7 +349,7 @@ export default function CustomTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 50, 100]}
                     component="div"
-                    count={totalPages ? totalPages * rowsPerPage : rows.length} // todo
+                    count={totalPages ? totalPages * rowsPerPage : rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -356,6 +361,7 @@ export default function CustomTable(props) {
 }
 
 CustomTable.propTypes = {
+    noToolbar: PropTypes.bool,
     columnWidths: PropTypes.arrayOf(PropTypes.number),
     title: PropTypes.string.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
@@ -365,6 +371,6 @@ CustomTable.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
     totalPages: PropTypes.number,
-    handleSearch: PropTypes.func.isRequired,
+    handleSearch: PropTypes.func,
     fromPersonalDb: PropTypes.bool,
 };
