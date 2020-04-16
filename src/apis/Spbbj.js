@@ -5,7 +5,7 @@ const generateSpbbjDoc = spbbjDocData => {
         axios({
             method: 'post',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/document/generate_sppbj',
+            url: '/sppbj/generate_sppbj',
             withCredentials: true,
             data: spbbjDocData,
             responseType: 'blob',
@@ -28,7 +28,7 @@ const getSpbbj = (currPage, perPage) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/document/get_sppbj/' + currPage,
+            url: '/sppbj/get_sppbj/' + currPage,
             withCredentials: true,
             params: {
                 perpage: perPage,
