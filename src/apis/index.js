@@ -5,4 +5,5 @@ import * as template from './Template';
 import * as spbbj from './Spbbj';
 import * as jamlak from './Jamlak';
 import * as kontrak from './Kontrak';
-export default { user, section, template, candidate, spbbj, jamlak, kontrak };
+import * as form from './Form';
+export default { user, section, template, candidate, spbbj, jamlak, form ,kontrak};

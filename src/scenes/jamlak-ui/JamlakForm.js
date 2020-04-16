@@ -80,7 +80,7 @@ function JamlakForm(props) {
                 defaultValue: sppbjData ? sppbjData['nomor_sppbj'] : '',
                 type: 'text',
                 placeholder: '',
-                disabled: false,  //todo true
+                disabled: true,
             },
         ].concat(baseField))
     }, [sppbjData]);

@@ -14,7 +14,7 @@ const generateSpbbjDoc = spbbjDocData => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'document.pdf');
+                link.setAttribute('download', 'document.docx');
                 document.body.appendChild(link);
                 link.click();
                 resolve(response);
@@ -43,5 +43,4 @@ const getSpbbj = (currPage, perPage) => {
     });
 };
 
-
-export { generateSpbbjDoc, getSpbbj};
+export { generateSpbbjDoc, getSpbbj };

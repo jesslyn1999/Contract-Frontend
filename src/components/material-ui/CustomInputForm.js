@@ -191,9 +191,7 @@ const CustomInputForm = props => {
                                                 let tempCustomField = customField;
                                                 let tempInputData = inputData;
                                                 delete tempInputData[item.idLabel];
-                                                // console.log('LALALALA first ', tempInputData);  // todo
                                                 tempCustomField.splice(idx - data.length, 1);
-                                                // console.log('LALALALA', tempCustomField);
                                                 setCustomField(tempCustomField);
                                                 setInputData(tempInputData);
                                             }}
