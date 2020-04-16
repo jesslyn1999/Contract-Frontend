@@ -77,7 +77,7 @@ function DocumentCreatorJamlakPanel(props) {
                     setOpenSpbbjDialog(false);
                     setIsLoading(true);
                     apis.jamlak
-                        .getJamlakBySppbj(rowData['nomor_sppbj'] || 'sfsdf32') //todo nomor sppbj
+                        .getJamlakBySppbj(rowData['nomor_sppbj'] || '')
                         .then(({ data }) => {
                             if (data.length > 0) {
                                 setBaseJamlakData(data[0]);
