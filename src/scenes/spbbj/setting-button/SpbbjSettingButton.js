@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ListItemLink(props) {
-    const { primary, to, className, candidateData } = props;
+    const { primary, to, className, rowId, rowData } = props;
 
     const renderLink = React.useMemo(
         () =>
@@ -33,13 +33,14 @@ function ListItemLink(props) {
                 <RouterLink
                     to={{
                         pathname: to,
-                        candidateData: candidateData,
+                        sppbjId: rowId,
+                        sppbjData: rowData,
                     }}
                     ref={ref}
                     {...itemProps}
                 />
             )),
-        [candidateData, to],
+        [rowId, rowData, to],
     );
 
     return (
@@ -54,11 +55,11 @@ function ListItemLink(props) {
 ListItemLink.propTypes = {
     primary: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
-    candidateData: PropTypes.object.isRequired,
+    rowId: PropTypes.string.isRequired,
 };
 
-export default function CandidateSettingButton(props) {
-    const { candidateData } = props;
+export default function SpbbjSettingButton(props) {
+    const { rowId, rowData } = props;
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -99,9 +100,17 @@ export default function CandidateSettingButton(props) {
                 <List component="nav" aria-label="setting options" className={classes.list}>
                     <ListItemLink
                         className={classes.listItemButton}
-                        primary="Membuat SPPBJ"
-                        to="/create-spbbj"
-                        candidateData={candidateData}
+                        primary="Form Data Jamlak"
+                        to="/jamlak-form"
+                        rowId={rowId}
+                        rowData={rowData}
+                    />
+                    <ListItemLink
+                        className={classes.listItemButton}
+                        primary="Membuat dokumen jamlak"
+                        to="/create-jamlak"
+                        rowId={rowId}
+                        rowData={rowData}
                     />
                 </List>
             </Popover>
@@ -109,7 +118,7 @@ export default function CandidateSettingButton(props) {
     );
 }
 
-CandidateSettingButton.propTypes = {
-    candidateData: PropTypes.object.isRequired,
+SpbbjSettingButton.propTypes = {
+    rowId: PropTypes.string.isRequired,
 };
 

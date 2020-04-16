@@ -96,5 +96,4 @@ const deleteTemplateById = id => {
     });
 };
 
-
 export { addNewTemplate, getAllTemplates, getTemplates, getTemplateById, deleteTemplateById };
