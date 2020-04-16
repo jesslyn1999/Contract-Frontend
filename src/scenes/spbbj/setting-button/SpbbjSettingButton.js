@@ -100,15 +100,8 @@ export default function SpbbjSettingButton(props) {
                 <List component="nav" aria-label="setting options" className={classes.list}>
                     <ListItemLink
                         className={classes.listItemButton}
-                        primary="Form Data Jamlak"
+                        primary="Tambah Data Jamlak"
                         to="/jamlak-form"
-                        rowId={rowId}
-                        rowData={rowData}
-                    />
-                    <ListItemLink
-                        className={classes.listItemButton}
-                        primary="Membuat dokumen jamlak"
-                        to="/create-jamlak"
                         rowId={rowId}
                         rowData={rowData}
                     />
