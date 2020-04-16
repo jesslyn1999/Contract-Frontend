@@ -66,6 +66,14 @@ function DocumentCreatorSpbbjPanel(props) {
             actionCallback={() => setOpenTemplateDialog(true)}
         />
     );
+    const getDetailsTagsPanel = () => (
+        <CustomInputForm
+            optionsEnabled={{ edit: false, add: false }}
+            data={baseTagData}
+            inputData={inputTagData}
+            setInputData={setInputTagData}
+        />
+    );
     return (
         <div className={classes.root}>
             {/*<CustomExpansionPanel title="Testing" getDetails={dummy} {...props} />*/}
@@ -79,21 +87,42 @@ function DocumentCreatorSpbbjPanel(props) {
                 getDetails={getDetailsCandidatePanel}
                 {...props}
             />
+            <CustomExpansionPanel title="Data Sets" getDetails={getDetailsTagsPanel} {...props} />
 
+            <SelectTemplateDialog
+                open={openTemplateDialog}
+                setOpen={setOpenTemplateDialog}
+                actionCallback={templateData => {
+                    const { id } = templateData;
+                    let obj = [];
+                    setBaseTemplateData(templateData);
+                    setOpenTemplateDialog(false);
+                    setIsLoading(true);
+                    apis.form
+                        .getAllTagsByTemplateId(id)
+                        .then(({ data }) => {
+                            data.forEach(item =>
+                                obj.push({
+                                    label: item,
+                                    idLabel: item,
+                                    defaultValue: '',
+                                    type: 'text',
+                                    placeholder: '',
+                                    disabled: false,
+                                }),
+                            );
+                            setBaseTagData(obj);
+                        })
+                        .catch()
+                        .finally(() => setIsLoading(false));
+                }}
+            />
             <CandidateDialog
                 open={openCandidateDialog}
                 setOpen={setOpenCandidateDialog}
                 actionCallback={data => {
                     setBaseCandidateData(data);
                     setOpenCandidateDialog(false);
-                }}
-            />
-            <SelectTemplateDialog
-                open={openTemplateDialog}
-                setOpen={setOpenTemplateDialog}
-                actionCallback={data => {
-                    setBaseTemplateData(data);
-                    setOpenTemplateDialog(false);
                 }}
             />
 
@@ -104,12 +133,13 @@ function DocumentCreatorSpbbjPanel(props) {
                 disabled={isLoading}
                 onClick={() => {
                     setIsLoading(true);
-                    apis.spbbj.generateSpbbjDoc({
-                        id_template: inputTemplateData.id,
-                        data_pemenang: inputCandidateData,
-                        data_form: inputTagData,
-                    }) // todo
-                        .finally(() => setIsLoading(false))
+                    apis.spbbj
+                        .generateSpbbjDoc({
+                            id_template: inputTemplateData.id,
+                            data_pemenang: inputCandidateData,
+                            data_form: inputTagData,
+                        }) // todo
+                        .finally(() => setIsLoading(false));
                 }}
                 className={classes.submitButton}
             >
@@ -136,10 +166,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
 DocumentCreatorSpbbjPanel.propTypes = {
     candidateData: PropTypes.object,
     templateData: PropTypes.object,
 };
-
 
 export default DocumentCreatorSpbbjPanel;

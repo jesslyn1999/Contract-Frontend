@@ -100,7 +100,7 @@ export default function CandidateSettingButton(props) {
                     <ListItemLink
                         className={classes.listItemButton}
                         primary="Membuat SPPBJ"
-                        to="/create-document"
+                        to="/create-spbbj"
                         candidateData={candidateData}
                     />
                 </List>
