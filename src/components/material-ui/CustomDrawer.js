@@ -52,8 +52,6 @@ const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
 }));
 
-const tables = ['PEMENANG', 'SPPBJ', 'JAMLAK'];
-
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -73,10 +71,11 @@ function TabPanel(props) {
 
 export default function TagPanelRight() {
     const classes = useStyles();
-    const [value, setValue] = React.useState('set');
-    const [tableName, setTableName] = React.useState(tables[0]);
+    const [value, setValue] = React.useState('get');
+    const [tableName, setTableName] = React.useState('PEMENANG');
     const [open, setOpen] = React.useState(false);
     const [tableColumn, setTableColumn] = React.useState([]);
+    const [tables, setTables] = React.useState(['PEMENANG', 'SPPBJ', 'JAMLAK']);
 
     useEffect(() => {
         if (tableName === 'JAMLAK') {
@@ -123,6 +122,16 @@ export default function TagPanelRight() {
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
+        if (newValue === 'get') {
+            let tables = ['PEMENANG', 'SPPBJ', 'JAMLAK'] 
+            setTables(tables);
+            setTableName(tables[0]);
+        } else 
+        if (newValue === 'set') {
+            let tables = ['SPPBJ'];
+            setTables(tables);
+            setTableName(tables[0]);
+        }
     };
 
     const handleSelectChange = event => {
@@ -160,9 +169,71 @@ export default function TagPanelRight() {
                 textColor="primary"
                 centered
             >
-                <Tab value="set" label="Set" />
                 <Tab value="get" label="Get" />
+                <Tab value="set" label="Set" />
             </Tabs>
+
+            <TabPanel value={value} index="get">
+                <Box display="flex" alignItems="center" justifyContent="center">
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="table-name-label">Nama tabel</InputLabel>
+                        <Select
+                            labelId="table-name-label"
+                            id="table-name-select"
+                            open={open}
+                            onClose={handleSelectClose}
+                            onOpen={handleSelectOpen}
+                            value={tableName}
+                            onChange={handleSelectChange}
+                        >
+                            {tables.map((text, index) => (
+                                <MenuItem value={text}>{text}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+
+                <Divider />
+
+                <List>
+                    {tableColumn.map((text, index) => (
+                        <Grid container className={classes.grid} justify="center" spacing={0}>
+                            <Grid key={`${value}:${text}`} item xs={5}>
+                                <Paper variant="outlined" className={classes.paper}>
+                                    <Box
+                                        component="div"
+                                        className={classes.tag}
+                                        textOverflow="ellipsis"
+                                    >
+                                        {text}
+                                    </Box>
+                                </Paper>
+                            </Grid>
+
+                            <Grid key={value} item xs={7}>
+                                <ListItem
+                                    className={classes.listitem}
+                                    onClick={handleListClicked.bind(this, '<<get:' + text + '>>')}
+                                    button
+                                    key={text}
+                                >
+                                    <ListItemText
+                                        primary={
+                                            <Box
+                                                component="div"
+                                                className={classes.tag}
+                                                textOverflow="ellipsis"
+                                            >
+                                                &lt;&lt;get:{text}&gt;&gt;
+                                            </Box>
+                                        }
+                                    />
+                                </ListItem>
+                            </Grid>
+                        </Grid>
+                    ))}
+                </List>
+            </TabPanel>
 
             <TabPanel value={value} index="set">
                 <Box display="flex" alignItems="center" justifyContent="center">
@@ -226,67 +297,6 @@ export default function TagPanelRight() {
                 </List>
             </TabPanel>
 
-            <TabPanel value={value} index="get">
-                <Box display="flex" alignItems="center" justifyContent="center">
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="table-name-label">Nama tabel</InputLabel>
-                        <Select
-                            labelId="table-name-label"
-                            id="table-name-select"
-                            open={open}
-                            onClose={handleSelectClose}
-                            onOpen={handleSelectOpen}
-                            value={tableName}
-                            onChange={handleSelectChange}
-                        >
-                            {tables.map((text, index) => (
-                                <MenuItem value={text}>{text}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Box>
-
-                <Divider />
-
-                <List>
-                    {tableColumn.map((text, index) => (
-                        <Grid container className={classes.grid} justify="center" spacing={0}>
-                            <Grid key={`${value}:${text}`} item xs={5}>
-                                <Paper variant="outlined" className={classes.paper}>
-                                    <Box
-                                        component="div"
-                                        className={classes.tag}
-                                        textOverflow="ellipsis"
-                                    >
-                                        {text}
-                                    </Box>
-                                </Paper>
-                            </Grid>
-
-                            <Grid key={value} item xs={7}>
-                                <ListItem
-                                    className={classes.listitem}
-                                    onClick={handleListClicked.bind(this, '<<get:' + text + '>>')}
-                                    button
-                                    key={text}
-                                >
-                                    <ListItemText
-                                        primary={
-                                            <Box
-                                                component="div"
-                                                className={classes.tag}
-                                                textOverflow="ellipsis"
-                                            >
-                                                &lt;&lt;get:{text}&gt;&gt;
-                                            </Box>
-                                        }
-                                    />
-                                </ListItem>
-                            </Grid>
-                        </Grid>
-                    ))}
-                </List>
-            </TabPanel>
         </Drawer>
     );
 }
