@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import apis from 'apis';
-import CustomTable from 'components/material-ui/CustomTable';
+import CustomTableSppbj from 'components/material-ui/CustomTableSppbj';
 import SpbbjSettingButton from 'scenes/spbbj/setting-button/SpbbjSettingButton';
 
 function SpbbjTable(props) {
@@ -68,8 +68,7 @@ function SpbbjTable(props) {
     }, [page, rowsPerPage]);
 
     return (
-        <CustomTable
-            noToolbar
+        <CustomTableSppbj
             title={title}
             isLoading={isLoading}
             headCells={headCells}

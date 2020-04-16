@@ -14,69 +14,34 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
-import CreateNewSection from 'scenes/sections-ui/create-new-section/CreateNewSection';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 
 const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
-    const { title, handleSearch, fromPersonalDb } = props;
-    const [query, setQuery] = useState('');
-
+    const { title } = props;
     return (
         <Toolbar className={clsx(classes.root, null)}>
             <Typography component="div" className={classes.title} variant="h6" id="tableTitle">
                 {title}
             </Typography>
-            {fromPersonalDb && (
-                <React.Fragment>
-                    <div className={classes.searchBar}>
-                        <Paper
-                            component="form"
-                            className={classes.search}
-                            onSubmit={handleSearch(query)}
-                        >
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                fullWidth
-                                placeholder="Search ..."
-                                value={query}
-                                onChange={event => setQuery(event.target.value)}
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Paper>
-                    </div>
-                    {/* <CreateNewSection
-                        triggerContent={() => (
-                            <Tooltip
-                                title="Add Section"
-                                className={classes.plusIcon}
-                                enterDelay={500}
-                                leaveDelay={100}
-                            >
-                                <IconButton href="" aria-label="Add Section">
-                                    <AddIcon />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                    /> */}
-                </React.Fragment>
-            )}
+                <Tooltip
+                    title="Add Sppbj"
+                    className={classes.plusIcon}
+                    enterDelay={500}
+                    leaveDelay={100}
+                >
+                    <IconButton href="" aria-label="Add Sppbj">
+                        <AddIcon />
+                    </IconButton>
+                </Tooltip>
+
         </Toolbar>
     );
 };
 
 EnhancedTableToolbar.propTypes = {
     title: PropTypes.string.isRequired,
-    handleSearch: PropTypes.func.isRequired,
 };
 
 function descendingComparator(a, b, orderBy) {
@@ -212,8 +177,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CustomTableSPPBJ(props) {
+export default function CustomTableSppbj(props) {
     const {
+        noToolbar,
         columnWidths,
         title,
         isLoading,
@@ -256,6 +222,7 @@ export default function CustomTableSPPBJ(props) {
             <Paper className={classes.paper}>
                 <EnhancedTableToolbar
                     title={title}
+                    noToolbar={noToolbar}
                     handleSearch={handleSearch}
                     fromPersonalDb={fromPersonalDb}
                 />
@@ -318,6 +285,7 @@ export default function CustomTableSPPBJ(props) {
                                                 {fromPersonalDb
                                                     ? settingButton({
                                                           rowId: row[Object.keys(row)[0]],
+                                                          rowData: row,
                                                       })
                                                     : settingButton({
                                                           candidateData: row,
@@ -344,7 +312,7 @@ export default function CustomTableSPPBJ(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 50, 100]}
                     component="div"
-                    count={totalPages ? totalPages * rowsPerPage : rows.length} // todo
+                    count={totalPages ? totalPages * rowsPerPage : rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -355,7 +323,8 @@ export default function CustomTableSPPBJ(props) {
     );
 }
 
-CustomTableSPPBJ.propTypes = {
+CustomTableSppbj.propTypes = {
+    noToolbar: PropTypes.bool,
     columnWidths: PropTypes.arrayOf(PropTypes.number),
     title: PropTypes.string.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object).isRequired, // assume: first element consist of label Id
@@ -365,6 +334,6 @@ CustomTableSPPBJ.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     setRowsPerPage: PropTypes.func.isRequired,
     totalPages: PropTypes.number,
-    handleSearch: PropTypes.func.isRequired,
+    handleSearch: PropTypes.func,
     fromPersonalDb: PropTypes.bool,
 };

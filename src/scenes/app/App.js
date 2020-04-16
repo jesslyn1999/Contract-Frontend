@@ -6,7 +6,6 @@ import AdminPage from 'scenes/administration-ui/AdminPage';
 import CandidatePage from 'scenes/candidates-ui/CandidatePage';
 import SectionPage from 'scenes/sections-ui/SectionPage';
 import Template from 'scenes/template-ui/Template';
-import SPPBJList from 'scenes/sppbj-ui/SPPBJList';
 import DocumentCreatorSpbbjPage from 'scenes/document-ui/DocumentCreatorSpbbjPage';
 import DocumentCreatorJamlakPage from 'scenes/document-ui/DocumentCreatorJamlakjPage';
 import JamlakForm from 'scenes/jamlak-ui/JamlakForm';
@@ -32,7 +31,6 @@ export const App = () => {
                     <Route key="admin" exact path="/admin" render={AdminPage} />
                     <Route key="section" exact path="/section" component={SectionPage} />
                     <Route key="template" exact path="/template" component={Template} />
-                    <Route key="sppbj" exact path="/sppbj" component={SPPBJList} />
                     <Route key="login" path="/login" component={Login} />
                     <Route key="candidate" path="/candidate" component={CandidatePage} />
                     <Route
@@ -46,7 +44,7 @@ export const App = () => {
                         component={DocumentCreatorJamlakPage}
                     />
                     <Route key="jamlak-form" path="/jamlak-form" component={JamlakForm} />
-                    <Route key="document" path="/document" component={SpbbjPage} />
+                    <Route key="sppbj" path="/sppbj" component={SpbbjPage} />
             </Switch>
             </BrowserRouter>
         </StateProvider>

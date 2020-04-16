@@ -43,4 +43,5 @@ const getSpbbj = (currPage, perPage) => {
     });
 };
 
-export { generateSpbbjDoc, getSpbbj };
+
+export { generateSpbbjDoc, getSpbbj};
