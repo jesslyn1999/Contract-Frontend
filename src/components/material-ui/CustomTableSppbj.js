@@ -234,7 +234,7 @@ export default function CustomTableSppbj(props) {
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
                             headCells={headCells}
-                            columnWidths={columnWidths}
+                            columnWidths={columnWidths}                     
                         />
                         {!isLoading ? (
                             <TableBody>

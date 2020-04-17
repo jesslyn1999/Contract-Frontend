@@ -17,18 +17,17 @@ function KontrakTable(props) {
     const title = 'List of Document Kontrak';
 
     useEffect(() => {
-        const fetchSpbbj = async (currPage, perPage) => {
+        const fetchKontrak = async (currPage, perPage) => {
             setIsLoading(true);
-            apis.spbbj
-                .getSpbbj(currPage + 1, perPage)
+            apis.kontrak
+                .getKontrak(currPage + 1, perPage)
                 .then(res => {
                     const { data, pages } = res;
                     if (data && data.length > 0) {
                         let heads = [];
                         // const { _id, template_id, data_pemenang, data_form }
-                        ['template_id']
-                            .concat(Object.keys(data[0].data_pemenang || {}))
-                            .concat(Object.keys(data[0].data_form || {}))
+                        ['id_sppbj','id_jamlak','template_id']
+                            .concat(Object.keys(data[0].form_data || {}))
                             .forEach(item => {
                                 heads.push({
                                     id: item,
@@ -44,12 +43,13 @@ function KontrakTable(props) {
                             label: '',
                         });
                         let data_temp = data.map(item => {
-                            const { _id, template_id, data_pemenang, data_form } = item;
+                            const { _id, id_sppbj, id_jamlak, template_id, form_data } = item;
                             return {
                                 _id: _id,
+                                id_sppbj: id_sppbj,
                                 template_id: template_id,
-                                ...data_pemenang,
-                                ...data_form,
+                                id_jamlak: id_jamlak,
+                                ...form_data
                             };
                         });
                         setHeadCells(heads);
@@ -64,11 +64,11 @@ function KontrakTable(props) {
                     setIsLoading(false);
                 });
         };
-        fetchSpbbj(page, rowsPerPage);
+        fetchKontrak(page, rowsPerPage);
     }, [page, rowsPerPage]);
 
     return (
-        <CustomTableKontrak
+    <CustomTableKontrak
             title={title}
             isLoading={isLoading}
             headCells={headCells}

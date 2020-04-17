@@ -100,8 +100,8 @@ export default function KontrakSettingButton(props) {
                 <List component="nav" aria-label="setting options" className={classes.list}>
                     <ListItemLink
                         className={classes.listItemButton}
-                        primary="Tambah Data Jamlak"
-                        to="/jamlak-form"
+                        primary="Download"
+                        to={process.env.REACT_APP_BACKEND_URL + `/contract/download` + rowData['_id']}
                         rowId={rowId}
                         rowData={rowData}
                     />

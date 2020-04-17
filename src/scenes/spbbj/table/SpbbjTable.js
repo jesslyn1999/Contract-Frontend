@@ -25,7 +25,6 @@ function SpbbjTable(props) {
                     const { data, pages } = res;
                     if (data && data.length > 0) {
                         let heads = [];
-                        // const { _id, template_id, data_pemenang, data_form }
                         ['template_id']
                             .concat(Object.keys(data[0].data_pemenang || {}))
                             .concat(Object.keys(data[0].data_form || {}))

@@ -6,7 +6,7 @@ const getKontrak = (currPage, perPage) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/' + currPage,
+            url: '/contract/get_contract' + currPage,
             withCredentials: true,
             params: {
                 perpage: perPage,
