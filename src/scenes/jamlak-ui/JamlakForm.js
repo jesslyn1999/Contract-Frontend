@@ -17,14 +17,6 @@ const baseField = [
         disabled: false,
     },
     {
-        label: 'Pemberi Jaminan',
-        idLabel: 'pemberiJaminan',
-        defaultValue: '',
-        type: 'text',
-        placeholder: '',
-        disabled: false,
-    },
-    {
         label: 'Tanggal Pembuatan Jaminan',
         idLabel: 'tgl_pembuatan',
         defaultValue: new Date(),
@@ -71,23 +63,44 @@ function JamlakForm(props) {
     const { sppbjData } = props.location;
     const history = useHistory();
     const [inputBaseField, setInputBaseField] = useState(baseField);
-
-    useEffect(() => {
-        setInputBaseField([
-            {
-                label: 'Nomor SPPBJ',
-                idLabel: 'nomor_sppbj',
-                defaultValue: sppbjData ? sppbjData['nomor_sppbj'] : '',
-                type: 'text',
-                placeholder: '',
-                disabled: true,
-            },
-        ].concat(baseField))
-    }, [sppbjData]);
-
     const [isLoading, setIsLoading] = useState(false);
     const [customField, setCustomField] = useState([]);
     const [inputData, setInputData] = useState({});
+
+    useEffect(() => {
+        const fetchJamlak = async no_sppbj => {
+            setIsLoading(true);
+            apis.jamlak
+                .getJamlakBySppbj(encodeURIComponent(no_sppbj))
+                .then(({ data }) => {
+                    let obj = {};
+                    Object.keys(data[0]).forEach(key => {
+                        obj[key] = data[0][key] || '';
+                    });
+                    if (data.length > 0) setInputData(obj);
+                })
+                .catch(err => {
+                    console.log('Error in fetchJamlak.\n', err);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        };
+        if (sppbjData && sppbjData['NO_SPPBJ']) fetchJamlak(sppbjData['NO_SPPBJ']);
+        setInputBaseField(
+            [
+                {
+                    label: 'Nomor SPPBJ',
+                    idLabel: 'NO_SPPBJ',
+                    defaultValue: sppbjData ? sppbjData['NO_SPPBJ'] : '',
+                    type: 'text',
+                    placeholder: '',
+                    disabled: true,
+                },
+            ].concat(baseField),
+        );
+    }, [sppbjData]);
+
     const redirectPage = () => {
         alert('Harus memilih satu data sppbj');
         return <Redirect to="/document" />;
@@ -101,7 +114,7 @@ function JamlakForm(props) {
                     <CustomNavbar />
                     <div className={classes.root}>
                         <CustomInputForm
-                            optionsEnabled={{ edit: false, add: true }}
+                            optionsEnabled={{ edit: false, add: false }}
                             data={inputBaseField}
                             inputData={inputData}
                             setInputData={setInputData}
@@ -116,12 +129,18 @@ function JamlakForm(props) {
                             onClick={() => {
                                 setIsLoading(true);
                                 apis.jamlak
-                                    .addNewJamlak(inputData)
-                                    .then(() => alert('telah berhasil disimpan'))
+                                    .addNewJamlak({
+                                        no_sppbj: inputData['NO_SPPBJ'],
+                                        ...inputData,
+                                    })
+                                    .then(() => {
+                                        setIsLoading(false);
+                                        alert('telah berhasil disimpan');
+                                        history.push('/document');
+                                    })
                                     .catch(err => alert('gagal menyimpan : ' + err.message))
                                     .finally(() => {
                                         setIsLoading(false);
-                                        history.push('/document');
                                     });
                             }}
                             className={classes.submitButton}

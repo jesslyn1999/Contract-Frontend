@@ -6,6 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
     heading: {
@@ -19,12 +20,15 @@ const CustomExpansionPanel = props => {
     const classes = useStyles();
 
     return (
-        <ExpansionPanel defaultExpanded>
-            <ExpansionPanelSummary href="" expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>{title}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>{getDetails()}</ExpansionPanelDetails>
-        </ExpansionPanel>
+        <React.Fragment>
+            <ExpansionPanel defaultExpanded>
+                <ExpansionPanelSummary href="" expandIcon={<ExpandMoreIcon />}>
+                    <Typography className={classes.heading}>{title}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>{getDetails()}</ExpansionPanelDetails>
+            </ExpansionPanel>
+            <Box my={2} />
+        </React.Fragment>
     );
 };
 
