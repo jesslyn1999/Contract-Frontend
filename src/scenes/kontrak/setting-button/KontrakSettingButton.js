@@ -58,7 +58,7 @@ ListItemLink.propTypes = {
     rowId: PropTypes.string.isRequired,
 };
 
-export default function SpbbjSettingButton(props) {
+export default function KontrakSettingButton(props) {
     const { rowId, rowData } = props;
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -100,8 +100,8 @@ export default function SpbbjSettingButton(props) {
                 <List component="nav" aria-label="setting options" className={classes.list}>
                     <ListItemLink
                         className={classes.listItemButton}
-                        primary="Tambah Data Jamlak"
-                        to="/jamlak-form"
+                        primary="Download"
+                        to={process.env.REACT_APP_BACKEND_URL + `/contract/download` + rowData['_id']}
                         rowId={rowId}
                         rowData={rowData}
                     />
@@ -111,7 +111,7 @@ export default function SpbbjSettingButton(props) {
     );
 }
 
-SpbbjSettingButton.propTypes = {
+KontrakSettingButton.propTypes = {
     rowId: PropTypes.string.isRequired,
 };
 

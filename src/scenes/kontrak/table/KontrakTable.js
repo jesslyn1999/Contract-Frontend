@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import apis from 'apis';
-import CustomTableSppbj from 'components/material-ui/CustomTableSppbj';
-import SpbbjSettingButton from 'scenes/spbbj/setting-button/SpbbjSettingButton';
+import CustomTableKontrak from 'components/material-ui/CustomTableKontrak';
+import KontrakSettingButton from 'scenes/kontrak/setting-button/KontrakSettingButton';
 
-function SpbbjTable(props) {
+function KontrakTable(props) {
     const { actionSettingButton } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -14,20 +14,20 @@ function SpbbjTable(props) {
     const [rows, setRows] = useState([]);
     const [headCells, setHeadCells] = useState([]);
 
-    const title = 'List of Sppbj Data';
+    const title = 'List of Document Kontrak';
 
     useEffect(() => {
-        const fetchSpbbj = async (currPage, perPage) => {
+        const fetchKontrak = async (currPage, perPage) => {
             setIsLoading(true);
-            apis.spbbj
-                .getSpbbj(currPage + 1, perPage)
+            apis.kontrak
+                .getKontrak(currPage + 1, perPage)
                 .then(res => {
                     const { data, pages } = res;
                     if (data && data.length > 0) {
                         let heads = [];
-                        ['template_id']
-                            .concat(Object.keys(data[0].data_pemenang || {}))
-                            .concat(Object.keys(data[0].data_form || {}))
+                        // const { _id, template_id, data_pemenang, data_form }
+                        ['id_sppbj','id_jamlak','template_id']
+                            .concat(Object.keys(data[0].form_data || {}))
                             .forEach(item => {
                                 heads.push({
                                     id: item,
@@ -43,12 +43,13 @@ function SpbbjTable(props) {
                             label: '',
                         });
                         let data_temp = data.map(item => {
-                            const { _id, template_id, data_pemenang, data_form } = item;
+                            const { _id, id_sppbj, id_jamlak, template_id, form_data } = item;
                             return {
                                 _id: _id,
+                                id_sppbj: id_sppbj,
                                 template_id: template_id,
-                                ...data_pemenang,
-                                ...data_form,
+                                id_jamlak: id_jamlak,
+                                ...form_data
                             };
                         });
                         setHeadCells(heads);
@@ -57,17 +58,17 @@ function SpbbjTable(props) {
                     }
                 })
                 .catch(err => {
-                    console.log('Error in fetchSpbbj.\n', err);
+                    console.log('Error in fetchKontrak.\n', err);
                 })
                 .finally(() => {
                     setIsLoading(false);
                 });
         };
-        fetchSpbbj(page, rowsPerPage);
+        fetchKontrak(page, rowsPerPage);
     }, [page, rowsPerPage]);
 
     return (
-        <CustomTableSppbj
+    <CustomTableKontrak
             title={title}
             isLoading={isLoading}
             headCells={headCells}
@@ -77,13 +78,13 @@ function SpbbjTable(props) {
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             totalPages={totalPages}
-            settingButton={actionSettingButton || (props => <SpbbjSettingButton {...props} />)}
+            settingButton={actionSettingButton || (props => <KontrakSettingButton {...props} />)}
         />
     );
 }
 
-SpbbjTable.propTypes = {
+KontrakTable.propTypes = {
     actionSettingButton: PropTypes.func,
 };
 
-export default withRouter(SpbbjTable);
+export default withRouter(KontrakTable);
