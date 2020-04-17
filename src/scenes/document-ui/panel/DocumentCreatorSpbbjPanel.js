@@ -7,34 +7,8 @@ import CandidateDialog from 'scenes/candidates-ui/dialog/CandidateDialog';
 import SelectTemplateDialog from 'scenes/template-ui/select-template/SelectTemplateDialog';
 import apis from 'apis';
 import Button from '@material-ui/core/Button';
-
-const dummyData = [
-    {
-        label:
-            'Input anything 1 bla bla Input anything 1 bla bla Input anything 1 bla bla Input anything 1 bla bla Input anything 1 bla bla Input anything 1 bla bla',
-        idLabel: 'input',
-        defaultValue: 'Hello world',
-        type: 'text',
-        placeholder: '',
-        disabled: false,
-    },
-    {
-        label: 'Input anything 2',
-        idLabel: 'input2',
-        defaultValue: 'Hello world 2',
-        type: 'text',
-        placeholder: 'Placeholder',
-        disabled: false,
-    },
-    {
-        label: 'Input anything 3',
-        idLabel: 'input3',
-        defaultValue: 'Hello world 3',
-        type: 'text',
-        placeholder: 'Placeholder 3',
-        disabled: true,
-    },
-];
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 function DocumentCreatorSpbbjPanel(props) {
     const classes = useStyles();
@@ -47,7 +21,6 @@ function DocumentCreatorSpbbjPanel(props) {
     const [inputTemplateData, setInputTemplateData] = useState({});
     const [baseTagData, setBaseTagData] = useState({});
     const [inputTagData, setInputTagData] = useState({});
-    const dummy = () => <CustomInputForm data={dummyData} />;
     const getDetailsCandidatePanel = () => (
         <CustomInputForm
             optionsEnabled={{ edit: true, add: false }}
@@ -76,7 +49,10 @@ function DocumentCreatorSpbbjPanel(props) {
     );
     return (
         <div className={classes.root}>
-            {/*<CustomExpansionPanel title="Testing" getDetails={dummy} {...props} />*/}
+            <Typography component="h5" variant="h5" paragraph>
+                SPPBJ Generator
+            </Typography>
+            <Box my={8} />
             <CustomExpansionPanel
                 title="Template Data"
                 getDetails={getDetailsTemplatePanel}
@@ -165,7 +141,6 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(5),
     },
 }));
-
 
 DocumentCreatorSpbbjPanel.propTypes = {
     candidateData: PropTypes.object,

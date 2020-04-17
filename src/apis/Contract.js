@@ -1,20 +1,21 @@
 import axios from 'axios';
 
-const generateSpbbjDoc = spbbjDocData => {
+const generateContractDoc = contractDocData => {
     return new Promise((resolve, reject) => {
+        console.log("GENERATE contract: ", contractDocData);
         axios({
             method: 'post',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/sppbj/generate_sppbj',
+            url: '/contract/generate_contract',
             withCredentials: true,
-            data: spbbjDocData,
+            data: contractDocData,
             responseType: 'blob',
         })
             .then(response => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'sppbj.docx');
+                link.setAttribute('download', 'contract.docx');
                 document.body.appendChild(link);
                 link.click();
                 resolve(response);
@@ -23,12 +24,12 @@ const generateSpbbjDoc = spbbjDocData => {
     });
 };
 
-const getSpbbj = (currPage, perPage) => {
+const getKontrak = (currPage, perPage) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
             baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/sppbj/get_sppbj/' + currPage,
+            url: '/contract/get_contract' + currPage,
             withCredentials: true,
             params: {
                 perpage: perPage,
@@ -43,4 +44,4 @@ const getSpbbj = (currPage, perPage) => {
     });
 };
 
-export { generateSpbbjDoc, getSpbbj };
+export {generateContractDoc, getKontrak};

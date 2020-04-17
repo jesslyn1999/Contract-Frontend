@@ -74,7 +74,7 @@ export default function CustomNavbar(props) {
                     'Kontrak',
                     'Candidates',
                     'SPPBJ Document Generator',
-                    'Jamlak Document Generator',
+                    'Contract Document Generator',
                 ]}
                 sideBarLinks={[
                     '/home',

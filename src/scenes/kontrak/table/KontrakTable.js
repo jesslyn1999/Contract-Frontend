@@ -19,7 +19,7 @@ function KontrakTable(props) {
     useEffect(() => {
         const fetchKontrak = async (currPage, perPage) => {
             setIsLoading(true);
-            apis.kontrak
+            apis.contract
                 .getKontrak(currPage + 1, perPage)
                 .then(res => {
                     const { data, pages } = res;
