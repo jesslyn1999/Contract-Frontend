@@ -1,103 +1,93 @@
 import axios from 'axios';
 
-const addNewSection = sectionData => {
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'post',
-            baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/',
-            withCredentials: true,
-            data: sectionData,
+const addNewSection = (sectionData) => new Promise((resolve, reject) => {
+    axios({
+        method: 'post',
+        baseURL: process.env.REACT_APP_BACKEND_URL,
+        url: '/section/',
+        withCredentials: true,
+        data: sectionData,
+    })
+        .then((res) => {
+            resolve(res);
         })
-            .then(res => {
-                resolve(res);
-            })
-            .catch(err => {
-                reject(err);
-            });
-    });
-};
+        .catch((err) => {
+            reject(err);
+        });
+});
 
-const getAllSections = (source, keyword = '') => {
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'get',
-            baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/all',
-            withCredentials: true,
-            params: {
-                keyword: keyword,
-            },
-            cancelToken: source? source.token : null,
+const getAllSections = (source, keyword = '') => new Promise((resolve, reject) => {
+    axios({
+        method: 'get',
+        baseURL: process.env.REACT_APP_BACKEND_URL,
+        url: '/section/all',
+        withCredentials: true,
+        params: {
+            keyword,
+        },
+        cancelToken: source ? source.token : null,
+    })
+        .then(({ data }) => {
+            resolve(data);
         })
-            .then(({ data }) => {
-                resolve(data);
-            })
-            .catch(err => {
-                if( axios.isCancel(err)) console.log("cancel request");
-                else reject(err);
-            });
-    });
-};
+        .catch((err) => {
+            if (axios.isCancel(err)) alert('cancel request');
+            else reject(err);
+        });
+});
 
-const getSections = (currPage, perPage, find = null) => {
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'get',
-            baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/' + currPage,
-            withCredentials: true,
-            params: {
-                perpage: perPage,
-                find: find,
-            },
+const getSections = (currPage, perPage, find = null) => new Promise((resolve, reject) => {
+    axios({
+        method: 'get',
+        baseURL: process.env.REACT_APP_BACKEND_URL,
+        url: `/section/${currPage}`,
+        withCredentials: true,
+        params: {
+            perpage: perPage,
+            find,
+        },
+    })
+        .then(({ data }) => {
+            resolve(data);
         })
-            .then(({ data }) => {
-                resolve(data);
-            })
-            .catch(err => {
-                reject(err);
-            });
-    });
-};
+        .catch((err) => {
+            reject(err);
+        });
+});
 
-const getSectionById = id => {
-    console.log('getsectionbyid is called with id=', id);
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'get',
-            baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section',
-            withCredentials: true,
-            params: {
-                id: id,
-            },
+const getSectionById = (id) => new Promise((resolve, reject) => {
+    axios({
+        method: 'get',
+        baseURL: process.env.REACT_APP_BACKEND_URL,
+        url: '/section',
+        withCredentials: true,
+        params: {
+            id,
+        },
+    })
+        .then(({ data }) => {
+            resolve(data);
         })
-            .then(({ data }) => {
-                console.log(data);
-                resolve(data);
-            })
-            .catch(err => {
-                reject(err);
-            });
-    });
-};
+        .catch((err) => {
+            reject(err);
+        });
+});
 
-const deleteSectionById = id => {
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'delete',
-            baseURL: process.env.REACT_APP_BACKEND_URL,
-            url: '/section/' + id,
-            withCredentials: true,
+const deleteSectionById = (id) => new Promise((resolve, reject) => {
+    axios({
+        method: 'delete',
+        baseURL: process.env.REACT_APP_BACKEND_URL,
+        url: `/section/${id}`,
+        withCredentials: true,
+    })
+        .then(({ data }) => {
+            resolve(data);
         })
-            .then(({ data }) => {
-                resolve(data);
-            })
-            .catch(err => {
-                reject(err);
-            });
-    });
-};
+        .catch((err) => {
+            reject(err);
+        });
+});
 
-export { addNewSection, getSections, deleteSectionById, getAllSections, getSectionById };
+export {
+    addNewSection, getSections, deleteSectionById, getAllSections, getSectionById,
+};
