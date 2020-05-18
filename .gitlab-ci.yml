@@ -1,10 +1,26 @@
+image: node:12
+
+cache:
+    paths:
+        - node_modules/
+
 stages:
-    - lint
+    - linting
+    - deployment
 
 lint:
-    image: node:12
-    stage: lint
+    stage: linting
     before_script:
         - yarn install
     script:
         - yarn lint
+
+deploy:
+    stage: deployment
+    image: ruby:latest
+    before_script:
+        - apt-get update -qy
+        - apt-get install -y ruby-dev
+        - gem install dpl
+    script:
+        - dpl --provider=heroku --app=$HEROKU_APP_FE --api-key=$HEROKU_API_KEY
