@@ -18,6 +18,9 @@ lint:
 deploy:
     stage: deployment
     image: ruby:latest
+    only:
+        - development
+        - master
     before_script:
         - apt-get update -qy
         - apt-get install -y ruby-dev
